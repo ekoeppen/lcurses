@@ -1,0 +1,12 @@
+
+Lua Curses library is composed by the following components:
+
+    - lcurses_
+        a curses binding from C to lua
+
+    - cui_
+        a Console User Interface implemented in lua using curses functions
+
+
+.. _lcurses: lcurses.html
+.. _cui: cui.html

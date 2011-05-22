@@ -1,0 +1,1449 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.5: http://docutils.sourceforge.net/" />
+<title>LuaCurses reference manual</title>
+<meta name="author" content="Tiago Dionizio" />
+<meta name="date" content="2004-08-27" />
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<h1 class="title">LuaCurses reference manual</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Tiago Dionizio</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference" href="mailto:tngd&#64;mega.ist.utl.pt">tngd&#64;mega.ist.utl.pt</a></td></tr>
+<tr><th class="docinfo-name">Status:</th>
+<td>This is a &quot;work in progress&quot;</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>2004-08-27</td></tr>
+<tr><th class="docinfo-name">Version:</th>
+<td>1a</td></tr>
+</tbody>
+</table>
+<div class="document" id="luacurses-reference-manual">
+<p>LuaCurses provides an interface to the curses system.
+It works as a console application.</p>
+<dl>
+<dt>The current implementation was developed using:</dt>
+<dd><ul class="first last simple">
+<li>ncurses 5.4 on linux</li>
+<li>PDCurses 2.6 on win32</li>
+</ul>
+</dd>
+</dl>
+<div class="contents topic" id="contents">
+<p class="topic-title first"><a name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#usage" id="id6" name="id6">Usage</a></li>
+<li><a class="reference" href="#curses-functions" id="id7" name="id7">Curses functions</a></li>
+<li><a class="reference" href="#lua-curses-specific" id="id8" name="id8">Lua Curses specific</a></li>
+<li><a class="reference" href="#window" id="id9" name="id9">window</a></li>
+<li><a class="reference" href="#chstr" id="id10" name="id10">chstr</a></li>
+<li><a class="reference" href="#text-functions" id="id11" name="id11">Text functions</a></li>
+<li><a class="reference" href="#links" id="id12" name="id12">Links</a></li>
+<li><a class="reference" href="#extended-table-of-contents" id="id13" name="id13">Extended table of contents</a></li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h1><a class="toc-backref" href="#id6" name="usage">Usage</a></h1>
+<p>To load the Lua Curses library execute:</p>
+<pre class="literal-block">
+require('curses')
+</pre>
+<p>When loaded, it will create a new global variable of type table
+<tt class="literal"><span class="pre">curses</span></tt>.</p>
+</div>
+<div class="section" id="curses-functions">
+<h1><a class="toc-backref" href="#id7" name="curses-functions">Curses functions</a></h1>
+<p>Functions directly related to the curses API.</p>
+<div class="contents topic" id="member-functions">
+<p class="topic-title first"><a name="member-functions">Member functions</a></p>
+<ul class="simple">
+<li><a class="reference" href="#curses-init" id="id14" name="id14">curses.init</a></li>
+<li><a class="reference" href="#curses-done" id="id15" name="id15">curses.done</a></li>
+<li><a class="reference" href="#curses-isdone" id="id16" name="id16">curses.isdone</a></li>
+<li><a class="reference" href="#curses-main-window" id="id17" name="id17">curses.main_window</a></li>
+<li><a class="reference" href="#curses-columns" id="id18" name="id18">curses.columns</a></li>
+<li><a class="reference" href="#curses-lines" id="id19" name="id19">curses.lines</a></li>
+<li><a class="reference" href="#curses-has-color" id="id20" name="id20">curses.has_color</a></li>
+<li><a class="reference" href="#curses-start-color" id="id21" name="id21">curses.start_color</a></li>
+<li><a class="reference" href="#curses-init-pair" id="id22" name="id22">curses.init_pair</a></li>
+<li><a class="reference" href="#curses-pair-content" id="id23" name="id23">curses.pair_content</a></li>
+<li><a class="reference" href="#curses-colors" id="id24" name="id24">curses.colors</a></li>
+<li><a class="reference" href="#curses-color-pairs" id="id25" name="id25">curses.color_pairs</a></li>
+<li><a class="reference" href="#curses-color-pair" id="id26" name="id26">curses.color_pair</a></li>
+<li><a class="reference" href="#curses-baudrate" id="id27" name="id27">curses.baudrate</a></li>
+<li><a class="reference" href="#curses-erase-char" id="id28" name="id28">curses.erase_char</a></li>
+<li><a class="reference" href="#curses-kill-char" id="id29" name="id29">curses.kill_char</a></li>
+<li><a class="reference" href="#curses-has-insert-char" id="id30" name="id30">curses.has_insert_char</a></li>
+<li><a class="reference" href="#curses-has-insert-line" id="id31" name="id31">curses.has_insert_line</a></li>
+<li><a class="reference" href="#curses-termattrs" id="id32" name="id32">curses.termattrs</a></li>
+<li><a class="reference" href="#curses-termname" id="id33" name="id33">curses.termname</a></li>
+<li><a class="reference" href="#curses-longname" id="id34" name="id34">curses.longname</a></li>
+<li><a class="reference" href="#curses-ripoffline" id="id35" name="id35">curses.ripoffline</a></li>
+<li><a class="reference" href="#curses-napms" id="id36" name="id36">curses.napms</a></li>
+<li><a class="reference" href="#curses-cursor-set" id="id37" name="id37">curses.cursor_set</a></li>
+<li><a class="reference" href="#curses-beep" id="id38" name="id38">curses.beep</a></li>
+<li><a class="reference" href="#curses-flash" id="id39" name="id39">curses.flash</a></li>
+<li><a class="reference" href="#curses-new-window" id="id40" name="id40">curses.new_window</a></li>
+<li><a class="reference" href="#curses-new-pad" id="id41" name="id41">curses.new_pad</a></li>
+<li><a class="reference" href="#curses-doupdate" id="id42" name="id42">curses.doupdate</a></li>
+<li><a class="reference" href="#curses-nl" id="id43" name="id43">curses.nl</a></li>
+<li><a class="reference" href="#curses-cbreak" id="id44" name="id44">curses.cbreak</a></li>
+<li><a class="reference" href="#curses-echo" id="id45" name="id45">curses.echo</a></li>
+<li><a class="reference" href="#curses-raw" id="id46" name="id46">curses.raw</a></li>
+<li><a class="reference" href="#curses-halfdelay" id="id47" name="id47">curses.halfdelay</a></li>
+<li><a class="reference" href="#curses-unctrl" id="id48" name="id48">curses.unctrl</a></li>
+<li><a class="reference" href="#curses-keyname" id="id49" name="id49">curses.keyname</a></li>
+<li><a class="reference" href="#curses-delay-output" id="id50" name="id50">curses.delay_output</a></li>
+<li><a class="reference" href="#curses-flush-input" id="id51" name="id51">curses.flush_input</a></li>
+<li><a class="reference" href="#curses-ungetch" id="id52" name="id52">curses.ungetch</a></li>
+<li><a class="reference" href="#curses-slk-init" id="id53" name="id53">curses.slk_init</a></li>
+<li><a class="reference" href="#curses-slk-set" id="id54" name="id54">curses.slk_set</a></li>
+<li><a class="reference" href="#curses-slk-refresh" id="id55" name="id55">curses.slk_refresh</a></li>
+<li><a class="reference" href="#curses-slk-noutrefresh" id="id56" name="id56">curses.slk_noutrefresh</a></li>
+<li><a class="reference" href="#curses-slk-label" id="id57" name="id57">curses.slk_label</a></li>
+<li><a class="reference" href="#curses-slk-clear" id="id58" name="id58">curses.slk_clear</a></li>
+<li><a class="reference" href="#curses-slk-restore" id="id59" name="id59">curses.slk_restore</a></li>
+<li><a class="reference" href="#curses-slk-touch" id="id60" name="id60">curses.slk_touch</a></li>
+<li><a class="reference" href="#curses-slk-attron" id="id61" name="id61">curses.slk_attron</a></li>
+<li><a class="reference" href="#curses-slk-attroff" id="id62" name="id62">curses.slk_attroff</a></li>
+<li><a class="reference" href="#curses-slk-attrset" id="id63" name="id63">curses.slk_attrset</a></li>
+</ul>
+</div>
+<div class="section" id="curses-init">
+<h2><a class="toc-backref" href="#id14" name="curses-init">curses.init</a></h2>
+<p>Determines the terminal type and initializes all curses data structures.
+It also causes the first call to refresh to clear the screen.</p>
+<p>If errors occur, <a class="reference" href="#curses-init">curses.init</a> writes an appropriate error
+message to standard error and exits; otherwise, an user data object
+is returned representing the main window.</p>
+<p>Before you call any other curses functions <a class="reference" href="#curses-init">curses.init</a>
+must be called to make sure you access the correct information (with some exceptions like
+<a class="reference" href="#curses-slk-init">curses.slk_init</a> and <a class="reference" href="#curses-ripoffline">curses.ripoffline</a>).</p>
+<p>See also: <a class="reference" href="#curses-main-window">curses.main_window</a> <a class="reference" href="#window">window</a></p>
+</div>
+<div class="section" id="curses-done">
+<h2><a class="toc-backref" href="#id15" name="curses-done">curses.done</a></h2>
+<p>A program should always call <a class="reference" href="#curses-done">curses.done</a> before exiting or escaping from
+curses mode temporarily.  This routine restores tty modes, moves the
+cursor to the lower left-hand corner of the screen and resets the
+terminal into the proper non-visual mode. Calling <a class="reference" href="#window-refresh">window:refresh</a> or
+<a class="reference" href="#curses-doupdate">curses.doupdate</a> after a temporary escape causes the program to resume
+visual mode.</p>
+<p>See also: <a class="reference" href="#curses-init">curses.init</a></p>
+</div>
+<div class="section" id="curses-isdone">
+<h2><a class="toc-backref" href="#id16" name="curses-isdone">curses.isdone</a></h2>
+<p>The <a class="reference" href="#curses-isdone">curses.isdone</a> routine returns <tt class="literal"><span class="pre">true</span></tt> if
+<a class="reference" href="#curses-done">curses.done</a> has been called without any
+subsequent calls to <a class="reference" href="#window-refresh">window:refresh</a> or
+<a class="reference" href="#curses-doupdate">curses.doupdate</a>, and <tt class="literal"><span class="pre">false</span></tt> otherwise.</p>
+</div>
+<div class="section" id="curses-main-window">
+<h2><a class="toc-backref" href="#id17" name="curses-main-window">curses.main_window</a></h2>
+<p>Returns an user data object representing the main window.</p>
+<p>See also: <a class="reference" href="#curses-init">curses.init</a> <a class="reference" href="#window">window</a></p>
+</div>
+<div class="section" id="curses-columns">
+<h2><a class="toc-backref" href="#id18" name="curses-columns">curses.columns</a></h2>
+<p>Returns the number of columns of the terminal.</p>
+</div>
+<div class="section" id="curses-lines">
+<h2><a class="toc-backref" href="#id19" name="curses-lines">curses.lines</a></h2>
+<p>Returns the number of lines of the terminal.</p>
+</div>
+<div class="section" id="curses-has-color">
+<h2><a class="toc-backref" href="#id20" name="curses-has-color">curses.has_color</a></h2>
+<p>It returns <tt class="literal"><span class="pre">true</span></tt> if the terminal can manipulate colors; otherwise, it
+returns <tt class="literal"><span class="pre">false</span></tt>. This routine facilitates writing terminal-independent
+programs. For example, a programmer can use it to decide whether to use
+color or some other video attribute.</p>
+<p>Note on using colors:</p>
+<blockquote>
+Curses support color attributes on terminals with that capability. To use
+these routines <a class="reference" href="#curses-start-color">curses.start_color</a> must be called, usually right
+after <a class="reference" href="#curses-init">curses.init</a>.
+Colors are always used in pairs (referred to as color-pairs).  A color-pair
+consists of a foreground color (for characters) and a background color (for
+the blank field on which the characters are displayed).  A programmer
+initializes a color-pair with the routine <a class="reference" href="#curses-init-pair">curses.init_pair</a>.
+After it has been initialized, <a class="reference" href="#curses-color-pair">curses.color_pair</a> can be
+used as a new video attribute.</blockquote>
+</div>
+<div class="section" id="curses-start-color">
+<h2><a class="toc-backref" href="#id21" name="curses-start-color">curses.start_color</a></h2>
+<p>It must be called if the programmer wants to use colors, and before any
+other color manipulation routine is called.  It is good practice to call
+this routine right after <a class="reference" href="#curses-init">curses.init</a>. <a class="reference" href="#curses-start-color">curses.start_color</a>
+initializes eight basic colors (black, red, green, yellow, blue,
+magenta, cyan, and white), and values, returned by <a class="reference" href="#curses-colors">curses.colors</a>
+and <a class="reference" href="#curses-color-pairs">curses.color_pairs</a> (respectively defining the maximum
+number of colors and color-pairs the terminal can support).
+It also restores the colors on the terminal to the values they had when
+the terminal was just turned on.</p>
+<p>Returns <tt class="literal"><span class="pre">false</span></tt> in case of error, <tt class="literal"><span class="pre">true</span></tt> otherwise.</p>
+</div>
+<div class="section" id="curses-init-pair">
+<h2><a class="toc-backref" href="#id22" name="curses-init-pair">curses.init_pair</a></h2>
+<pre class="literal-block">
+curses.init_pair(color_pair_number, foreground_color, background_color)
+</pre>
+<p>The <a class="reference" href="#curses-init-pair">curses.init_pair</a> routine changes the definition of a color-pair.  It
+takes three arguments: the number of the color-pair to be changed, the
+foreground color number, and the background color number.  For portable
+applications:</p>
+<blockquote>
+<ul class="simple">
+<li>The value of the first argument must be between 1 and
+<a class="reference" href="#curses-color-pairs">curses.color_pairs</a> - 1.</li>
+<li>The value of the second and third arguments must be between 0
+and <a class="reference" href="#curses-colors">curses.colors</a> (the 0 color pair is wired to white on black and
+cannot be changed).</li>
+</ul>
+</blockquote>
+<p>If the color-pair was previously initialized, the screen is refreshed and
+all occurrences of that color-pair are changed to the new definition.</p>
+<p>Returns <tt class="literal"><span class="pre">false</span></tt> in case of error, <tt class="literal"><span class="pre">true</span></tt> otherwise.</p>
+</div>
+<div class="section" id="curses-pair-content">
+<h2><a class="toc-backref" href="#id23" name="curses-pair-content">curses.pair_content</a></h2>
+<pre class="literal-block">
+fg, bg = curses.pair_content(color_pair_number)
+</pre>
+<p>This routine allows programmers to find out what colors a given color-pair consists of.</p>
+<p>In case of success, it returns two numbers defining the foreground color
+and the background color respectively.</p>
+<p>Returns <tt class="literal"><span class="pre">nil</span></tt> in case of error.</p>
+<p>See also: <a class="reference" href="#curses-colors">curses.colors</a></p>
+</div>
+<div class="section" id="curses-colors">
+<h2><a class="toc-backref" href="#id24" name="curses-colors">curses.colors</a></h2>
+<p>Returns the maximum number of colors the terminal can support.</p>
+</div>
+<div class="section" id="curses-color-pairs">
+<h2><a class="toc-backref" href="#id25" name="curses-color-pairs">curses.color_pairs</a></h2>
+<p>Returns the maximum number of color pairs the terminal can support.</p>
+</div>
+<div class="section" id="curses-color-pair">
+<h2><a class="toc-backref" href="#id26" name="curses-color-pair">curses.color_pair</a></h2>
+<pre class="literal-block">
+syntax: attribute = curses.color_pair(color_pair_number)
+</pre>
+<p>Returns a number that can be used as a video attribute.</p>
+</div>
+<div class="section" id="curses-baudrate">
+<h2><a class="toc-backref" href="#id27" name="curses-baudrate">curses.baudrate</a></h2>
+<p>The <a class="reference" href="#curses-baudrate">curses.baudrate</a> routine returns the output speed
+of the terminal.  The number returned is in bits per second, for
+example 9600, and is a number (integer).</p>
+</div>
+<div class="section" id="curses-erase-char">
+<h2><a class="toc-backref" href="#id28" name="curses-erase-char">curses.erase_char</a></h2>
+<p>The <a class="reference" href="#curses-erase-char">curses.erase_char</a> routine returns the user's current erase character.</p>
+</div>
+<div class="section" id="curses-kill-char">
+<h2><a class="toc-backref" href="#id29" name="curses-kill-char">curses.kill_char</a></h2>
+<p>The <a class="reference" href="#curses-kill-char">curses.kill_char</a> routine returns the user's current line kill character.</p>
+</div>
+<div class="section" id="curses-has-insert-char">
+<h2><a class="toc-backref" href="#id30" name="curses-has-insert-char">curses.has_insert_char</a></h2>
+<p>The <a class="reference" href="#curses-has-insert-char">curses.has_insert_char</a> routine returns <tt class="literal"><span class="pre">true</span></tt> if the terminal has insert
+and delete character capabilities.</p>
+</div>
+<div class="section" id="curses-has-insert-line">
+<h2><a class="toc-backref" href="#id31" name="curses-has-insert-line">curses.has_insert_line</a></h2>
+<p>The <a class="reference" href="#curses-has-insert-line">curses.has_insert_line</a> routine returns <tt class="literal"><span class="pre">true</span></tt> if the terminal has insert
+and delete line capabilities, or can simulate them using scrolling
+regions.  This might be used to determine if it would be appropriate to
+turn on physical scrolling using <a class="reference" href="#window-scrollok">window:scrollok</a>.</p>
+</div>
+<div class="section" id="curses-termattrs">
+<h2><a class="toc-backref" href="#id32" name="curses-termattrs">curses.termattrs</a></h2>
+<p>Return a logical <strong>or</strong> (binary or) of all video attributes supported by the terminal
+using curses.A_xxx constants.</p>
+<p>To check for a specific attribute, pass the attribute value to
+&lt;code&gt;curses.termattrs()&lt;/code&gt;.  It will return true if the attribute is supported.</p>
+<p>This information is useful when a curses program needs complete control
+over the appearance of the screen.</p>
+<pre class="literal-block">
+syntax: attributes = curses.termattrs()
+syntax: has_attribute = curses.termattrs(attribute)
+</pre>
+</div>
+<div class="section" id="curses-termname">
+<h2><a class="toc-backref" href="#id33" name="curses-termname">curses.termname</a></h2>
+<p>The <a class="reference" href="#curses-termname">curses.termname</a> routine returns the value of the environmental variable
+TERM (truncated to 14 characters).</p>
+</div>
+<div class="section" id="curses-longname">
+<h2><a class="toc-backref" href="#id34" name="curses-longname">curses.longname</a></h2>
+<p>The <a class="reference" href="#curses-longname">curses.longname</a> routine returns a verbose description of the current
+terminal. The maximum length of a verbose description is 128 characters.
+It is defined only after the call to <a class="reference" href="#curses-init">curses.init</a>.</p>
+</div>
+<div class="section" id="curses-ripoffline">
+<h2><a class="toc-backref" href="#id35" name="curses-ripoffline">curses.ripoffline</a></h2>
+<pre class="literal-block">
+function ripline(window, columns)
+    -- do something with the window (line)
+end
+
+top = true -- take a line from the top of the screen
+curses.ripoffline(top, ripline)
+</pre>
+<p>The ripoffline routine provides access to the same  facility that
+<a class="reference" href="#curses-slk-init">curses.slk_init</a> uses to reduce the size of the screen.
+<a class="reference" href="#curses-ripoffline">curses.ripoffline</a> must be called before <a class="reference" href="#curses-init">curses.init</a>.
+If <strong>top</strong> is <tt class="literal"><span class="pre">true</span></tt>, a line is removed from the top
+of the screen; if <strong>top</strong> is <tt class="literal"><span class="pre">false</span></tt>, a line is removed from the bottom.</p>
+<p>When this is done inside <a class="reference" href="#curses-init">curses.init</a>, the function supplied by the user is
+called with two arguments: a user data object representing the one-line
+window that has been allocated and a number with the number of columns
+in the window.  Inside this initialization routine, the values of <a class="reference" href="#curses-columns">curses.columns</a>
+and <a class="reference" href="#curses-lines">curses.lines</a> are not guaranteed to be accurate and
+<a class="reference" href="#window-refresh">window:refresh</a> or <a class="reference" href="#curses-doupdate">curses.doupdate</a> must not be called.
+It is allowable to call <a class="reference" href="#window-noutrefresh">window:noutrefresh</a> during the initialization routine.</p>
+</div>
+<div class="section" id="curses-napms">
+<h2><a class="toc-backref" href="#id36" name="curses-napms">curses.napms</a></h2>
+<pre class="literal-block">
+ms = 1000 -- sleep for 1 second
+curses.sleep(ms)
+</pre>
+<p>Sleep for <strong>ms</strong> milliseconds.</p>
+</div>
+<div class="section" id="curses-cursor-set">
+<h2><a class="toc-backref" href="#id37" name="curses-cursor-set">curses.cursor_set</a></h2>
+<pre class="literal-block">
+previous_state = curses.cursor_set(1)
+</pre>
+<p>The <a class="reference" href="#curses-cursor-set">curses.cursor_set</a> routine sets the cursor state to invisible, normal, or
+very visible for visibility equal to 0, 1, or 2 respectively.  If the
+terminal supports the visibility  requested, the previous cursor state
+is returned; otherwise, <tt class="literal"><span class="pre">nil</span></tt> is returned.</p>
+</div>
+<div class="section" id="curses-beep">
+<h2><a class="toc-backref" href="#id38" name="curses-beep">curses.beep</a></h2>
+<p>The <a class="reference" href="#curses-beep">curses.beep</a> and <a class="reference" href="#curses-flash">curses.flash</a>
+routines are used to alert the terminal user.
+The routine beep sounds an audible alarm on the terminal, if possible;
+otherwise it flashes the screen (visible bell).  The routine flash
+flashes the screen, and if that is not possible, sounds the alert.  If
+neither alert is possible, nothing happens. Nearly all terminals have an
+audible alert (bell or beep), but only some can flash the screen.</p>
+<pre class="literal-block">
+curses.beep()   -- terminal bell
+curses.flash()  -- flash screen
+</pre>
+</div>
+<div class="section" id="curses-flash">
+<h2><a class="toc-backref" href="#id39" name="curses-flash">curses.flash</a></h2>
+<p>See <a class="reference" href="#curses-beep">curses.beep</a>.</p>
+</div>
+<div class="section" id="curses-new-window">
+<h2><a class="toc-backref" href="#id40" name="curses-new-window">curses.new_window</a></h2>
+<pre class="literal-block">
+window = curses.new_window(lines, columns, y, x)
+</pre>
+<p>Calling <a class="reference" href="#curses-new-window">curses.new_window</a> creates and returns an user
+data object representing the new window with the given number of lines
+and columns.  The upper left-hand corner of the window is at line
+<strong>y</strong>, column <strong>x</strong>.  If either <strong>lines</strong> or <strong>columns</strong> is zero, they
+default to <tt class="literal"><span class="pre">curses.lines()</span> <span class="pre">-</span> <span class="pre">y</span></tt>
+and <tt class="literal"><span class="pre">curses.columns()</span> <span class="pre">-</span> <span class="pre">x</span></tt>.
+A new full-screen window is created by calling
+<tt class="literal"><span class="pre">curses.new_window(0,0,0,0)</span></tt>.</p>
+<p>See also: <a class="reference" href="#curses-lines">curses.lines</a> <a class="reference" href="#curses-columns">curses.columns</a> <a class="reference" href="#window">window</a> <a class="reference" href="#curses-new-pad">curses.new_pad</a></p>
+</div>
+<div class="section" id="curses-new-pad">
+<h2><a class="toc-backref" href="#id41" name="curses-new-pad">curses.new_pad</a></h2>
+<pre class="literal-block">
+pad = curses.new_pad(lines, columns)
+</pre>
+<p>The <a class="reference" href="#curses-new-pad">curses.new_pad</a> routine creates and returns an user data object
+representing the new pad data structure with the given number of lines,
+<strong>lines</strong>, and columns, <strong>columns</strong>.  A pad is like a window, except that it is
+not restricted by the screen size, and is not necessarily associated
+with a particular part of the screen.  Pads can be used when a large
+window is needed, and only a part of the window will be on the screen at
+one time.  Automatic refreshes of pads (e.g., from scrolling or echoing
+of input) do not occur.  It is not legal to call <a class="reference" href="#window-refresh">window:refresh</a> with a
+pad as an argument; the routines <a class="reference" href="#window-prefresh">window:prefresh</a> or <a class="reference" href="#window-pnoutrefresh">window:pnoutrefresh</a>
+should be called instead.  Note that these routines require additional
+parameters to specify the part of the pad to be displayed and the
+location on the screen to be used for the display.</p>
+<p>See also: <a class="reference" href="#curses-new-window">curses.new_window</a> <a class="reference" href="#window">window</a></p>
+</div>
+<div class="section" id="curses-doupdate">
+<h2><a class="toc-backref" href="#id42" name="curses-doupdate">curses.doupdate</a></h2>
+<p>Call <a class="reference" href="#curses-doupdate">curses.doupdate</a> to update the physical screen with the actual changes.</p>
+<p>See also: <a class="reference" href="#window-refresh">window:refresh</a></p>
+</div>
+<div class="section" id="curses-nl">
+<h2><a class="toc-backref" href="#id43" name="curses-nl">curses.nl</a></h2>
+<p>The <a class="reference" href="#curses-nl">curses.nl</a> routine control whether the underlying
+display device translates the return key into newline on
+input, and whether it translates newline into return  and
+line-feed  on output (in either case, the call <tt class="literal"><span class="pre">window:addch('\n')</span></tt>
+does the equivalent of return and line feed on the virtual
+screen). Initially, these translations do occur. If you
+disable them using <tt class="literal"><span class="pre">curses.nl(false)</span></tt>, curses will be
+able to make  better use of the line-feed capability, resulting in faster
+cursor motion. Also, curses will then be able to detect the return key.</p>
+<p>See also: <a class="reference" href="#window-addch">window:addch</a></p>
+</div>
+<div class="section" id="curses-cbreak">
+<h2><a class="toc-backref" href="#id44" name="curses-cbreak">curses.cbreak</a></h2>
+<pre class="literal-block">
+curses.cbreak(mode)
+</pre>
+<p>Normally, the tty driver buffers typed characters until a newline or
+carriage return is typed.  The <tt class="literal"><span class="pre">curses.cbreak(true)</span></tt> routine disables line
+buffering and erase/kill character-processing (interrupt and flow
+control characters are unaffected), making characters typed by the user
+immediately available to the program.  The <tt class="literal"><span class="pre">curses.cbreak(false)</span></tt> routine returns
+the terminal to normal (cooked) mode.</p>
+<p>Initially the terminal may or may not be in <tt class="literal"><span class="pre">curses.cbreak(true)</span></tt> mode, as the
+mode is inherited; therefore, a program should call <a class="reference" href="#curses-cbreak">curses.cbreak</a> explicitly.
+Most interactive programs using curses set the <tt class="literal"><span class="pre">curses.cbreak(true)</span></tt> mode.  Note
+that cbreak overrides <a class="reference" href="#curses-raw">curses.raw</a>.</p>
+<p>See also: <a class="reference" href="#curses-halfdelay">curses.halfdelay</a></p>
+</div>
+<div class="section" id="curses-echo">
+<h2><a class="toc-backref" href="#id45" name="curses-echo">curses.echo</a></h2>
+<pre class="literal-block">
+curses.echo(mode)
+</pre>
+<p>The <a class="reference" href="#curses-echo">curses.echo</a> routine control whether characters typed by the user are
+echoed by <a class="reference" href="#window-getch">window:getch</a> as they are typed. Echoing by the tty driver
+is always disabled, but initially getch is in echo mode, so
+characters typed are echoed. Authors of most interactive programs
+prefer to do their own echoing in a controlled area of the screen, or
+not to echo at all, so they disable echoing by calling <tt class="literal"><span class="pre">curses.echo(false)</span></tt>.</p>
+</div>
+<div class="section" id="curses-raw">
+<h2><a class="toc-backref" href="#id46" name="curses-raw">curses.raw</a></h2>
+<pre class="literal-block">
+curses.raw(mode)
+</pre>
+<p>The <a class="reference" href="#curses-raw">curses.raw</a> routine place the terminal into or out of raw mode.
+Raw mode is similar to <a class="reference" href="#curses-cbreak">curses.cbreak</a> mode, in that
+characters typed are immediately passed through to the
+user program. The differences are that in raw mode, the
+interrupt, quit, suspend, and flow control characters are
+all passed through uninterpreted, instead of generating  a
+signal. The behavior of the BREAK key depends on other
+bits in the tty driver that are not set by curses.</p>
+</div>
+<div class="section" id="curses-halfdelay">
+<h2><a class="toc-backref" href="#id47" name="curses-halfdelay">curses.halfdelay</a></h2>
+<pre class="literal-block">
+curses.halfdelay(tenths)
+</pre>
+<p>The <a class="reference" href="#curses-halfdelay">curses.halfdelay</a> routine is used for half-delay mode, which
+is similar to cbreak mode in that characters typed by the
+user are immediately available to the program. However,
+after blocking for <strong>tenths</strong> tenths of seconds, <tt class="literal"><span class="pre">false</span></tt> is
+returned  if  nothing has been typed.  The value of <strong>tenths</strong>
+must be a number between 1 and 255.  Use <tt class="literal"><span class="pre">curses.cbreak(false)</span></tt> to leave
+half-delay mode.</p>
+<p>See also: <a class="reference" href="#curses-cbreak">curses.cbreak</a></p>
+</div>
+<div class="section" id="curses-unctrl">
+<h2><a class="toc-backref" href="#id48" name="curses-unctrl">curses.unctrl</a></h2>
+<pre class="literal-block">
+str = curses.unctrl(ch)
+</pre>
+<p>The <a class="reference" href="#curses-unctrl">curses.unctrl</a> routine returns a string which is a
+printable representation of the character <strong>ch</strong>, ignoring
+attributes. Control characters are displayed in the <tt class="literal"><span class="pre">^X</span></tt>
+notation. Printing characters are displayed as is.</p>
+</div>
+<div class="section" id="curses-keyname">
+<h2><a class="toc-backref" href="#id49" name="curses-keyname">curses.keyname</a></h2>
+<pre class="literal-block">
+keyname = curses.keyname(key)
+</pre>
+<p>The <a class="reference" href="#curses-keyname">curses.keyname</a> routine returns a string corresponding
+to the key <strong>key</strong>.  Control characters are displayed in the
+<tt class="literal"><span class="pre">^X</span></tt> notation. Values above 128 are either meta characters,
+shown in the <tt class="literal"><span class="pre">M-X</span></tt> notation, or the names of function keys,
+or <tt class="literal"><span class="pre">nil</span></tt>.</p>
+</div>
+<div class="section" id="curses-delay-output">
+<h2><a class="toc-backref" href="#id50" name="curses-delay-output">curses.delay_output</a></h2>
+<pre class="literal-block">
+curses.delay_output(ms)
+</pre>
+<p>The <a class="reference" href="#curses-delay-output">curses.delay_output</a> routine inserts an <strong>ms</strong>
+millisecond pause in output. This routine should not be used extensively
+because padding characters are used rather than a CPU pause.</p>
+</div>
+<div class="section" id="curses-flush-input">
+<h2><a class="toc-backref" href="#id51" name="curses-flush-input">curses.flush_input</a></h2>
+<p>The <a class="reference" href="#curses-flush-input">curses.flush_input</a> routine throws away any typeahead that has
+been typed by the user and has not yet been read by the program.</p>
+</div>
+<div class="section" id="curses-ungetch">
+<h2><a class="toc-backref" href="#id52" name="curses-ungetch">curses.ungetch</a></h2>
+<pre class="literal-block">
+curses.ungetch(ch)
+</pre>
+<p>The curses.ungetch routine places <strong>ch</strong> back
+onto the input queue to be returned by the next call to
+<a class="reference" href="#window-getch">window:getch</a>. There is just one input queue for all windows.</p>
+</div>
+<div class="section" id="curses-slk-init">
+<h2><a class="toc-backref" href="#id53" name="curses-slk-init">curses.slk_init</a></h2>
+<pre class="literal-block">
+format = 0 -- arrange labels in 3-2-3 arrangement
+ok = curses.slk_init(format)
+</pre>
+<p>The <a class="reference" href="#curses-slk-init">curses.slk_init</a> routine must be called before <a class="reference" href="#curses-init">curses.init</a> is
+called. If <a class="reference" href="#curses-init">curses.init</a> eventually uses a line from <a class="reference" href="#curses-main-window">curses.main_window</a>
+to emulate the
+soft labels, then <strong>format</strong> determines how the labels are arranged on the
+screen.  Setting <strong>format</strong> to 0 indicates a 3-2-3 arrangement of the labels,
+1 indicates a 4-4 arrangement and 2 indicates the PC like 4-4-4 mode.
+If <strong>format</strong> is set to 3, it is again the PC like 4-4-4 mode, but in addition
+an index line is generated, helping the user to identify the key numbers easily.</p>
+</div>
+<div class="section" id="curses-slk-set">
+<h2><a class="toc-backref" href="#id54" name="curses-slk-set">curses.slk_set</a></h2>
+<pre class="literal-block">
+ok = curses.slk_set(labnum, label, format)
+</pre>
+<p>The <a class="reference" href="#curses-slk-set">curses.slk_set</a> routine requires <strong>labnum</strong> to be a label number,
+from 1 to 8 (resp.  12); <strong>label</strong>  must be the string
+to be put on the label, up to
+eight (resp. five) characters in length. <strong>format</strong>
+is either 0, 1, or 2, indicating
+whether the label is  to be left-justified, centered, or
+right-justified, respectively, within the label.</p>
+</div>
+<div class="section" id="curses-slk-refresh">
+<h2><a class="toc-backref" href="#id55" name="curses-slk-refresh">curses.slk_refresh</a></h2>
+<p>The <a class="reference" href="#curses-slk-refresh">curses.slk_refresh</a> and <a class="reference" href="#curses-slk-noutrefresh">curses.slk_noutrefresh</a> routines
+correspond to the <a class="reference" href="#window-refresh">window:refresh</a> and <a class="reference" href="#window-noutrefresh">window:noutrefresh</a>
+routines.</p>
+</div>
+<div class="section" id="curses-slk-noutrefresh">
+<h2><a class="toc-backref" href="#id56" name="curses-slk-noutrefresh">curses.slk_noutrefresh</a></h2>
+<p>See <a class="reference" href="#curses-slk-refresh">curses.slk_refresh</a>.</p>
+</div>
+<div class="section" id="curses-slk-label">
+<h2><a class="toc-backref" href="#id57" name="curses-slk-label">curses.slk_label</a></h2>
+<pre class="literal-block">
+label = curses.slk_label(labnum)
+</pre>
+<p>The <a class="reference" href="#curses-slk-label">curses.slk_label</a> routine returns the current label for label
+number <strong>labnum</strong>, with leading and trailing blanks stripped.</p>
+</div>
+<div class="section" id="curses-slk-clear">
+<h2><a class="toc-backref" href="#id58" name="curses-slk-clear">curses.slk_clear</a></h2>
+<p>The <a class="reference" href="#curses-slk-clear">curses.slk_clear</a> routine clears the soft labels from the screen.</p>
+</div>
+<div class="section" id="curses-slk-restore">
+<h2><a class="toc-backref" href="#id59" name="curses-slk-restore">curses.slk_restore</a></h2>
+<p>The <a class="reference" href="#curses-slk-restore">curses.slk_restore</a> routine restores the soft labels to the screen after a
+<a class="reference" href="#curses-slk-clear">curses.slk_clear</a> has been performed.</p>
+</div>
+<div class="section" id="curses-slk-touch">
+<h2><a class="toc-backref" href="#id60" name="curses-slk-touch">curses.slk_touch</a></h2>
+<p>The <a class="reference" href="#curses-slk-touch">curses.slk_touch</a> routine forces all the soft labels to be output the  next
+time a <a class="reference" href="#curses-slk-noutrefresh">curses.slk_noutrefresh</a> is performed.</p>
+</div>
+<div class="section" id="curses-slk-attron">
+<h2><a class="toc-backref" href="#id61" name="curses-slk-attron">curses.slk_attron</a></h2>
+<p>The <a class="reference" href="#curses-slk-attron">curses.slk_attron</a>, <a class="reference" href="#curses-slk-attrset">curses.slk_attrset</a>, <a class="reference" href="#curses-slk-attroff">curses.slk_attroff</a>
+have an effect only if soft  labels are simulated on the
+bottom line of the screen.</p>
+</div>
+<div class="section" id="curses-slk-attroff">
+<h2><a class="toc-backref" href="#id62" name="curses-slk-attroff">curses.slk_attroff</a></h2>
+<p>See <a class="reference" href="#curses-slk-attron">curses.slk_attron</a>.</p>
+</div>
+<div class="section" id="curses-slk-attrset">
+<h2><a class="toc-backref" href="#id63" name="curses-slk-attrset">curses.slk_attrset</a></h2>
+<p>See <a class="reference" href="#curses-slk-attron">curses.slk_attron</a>.</p>
+</div>
+</div>
+<div class="section" id="lua-curses-specific">
+<h1><a class="toc-backref" href="#id8" name="lua-curses-specific">Lua Curses specific</a></h1>
+<p>Functions that are implemented in lua curses for convenience or to
+provide an easier way to do things.</p>
+<div class="contents topic" id="id1">
+<ul class="simple">
+<li><a class="reference" href="#curses-new-chstr" id="id64" name="id64">curses.new_chstr</a></li>
+<li><a class="reference" href="#curses-map-output" id="id65" name="id65">curses.map_output</a></li>
+<li><a class="reference" href="#curses-map-keyboard" id="id66" name="id66">curses.map_keyboard</a></li>
+</ul>
+</div>
+<div class="section" id="curses-new-chstr">
+<h2><a class="toc-backref" href="#id64" name="curses-new-chstr">curses.new_chstr</a></h2>
+<pre class="literal-block">
+len = 10
+chstr = curses.new_chstr(len) -- create chstr object with len positions to use
+</pre>
+<p>Creates a new <tt class="literal"><span class="pre">chstr</span></tt> object to use as a buffered line to draw into.
+It will have <strong>len</strong> positions to use.</p>
+<p>See also: <a class="reference" href="#chstr">chstr</a></p>
+</div>
+<div class="section" id="curses-map-output">
+<h2><a class="toc-backref" href="#id65" name="curses-map-output">curses.map_output</a></h2>
+<pre class="literal-block">
+oldmode = curses.map_output(mode)
+</pre>
+<p>Maps the curses <strong>chstr</strong> characters to a character that has a printable
+representation if that is not the case.</p>
+<p><strong>mode</strong> is a boolean value indicating if <strong>chstr</strong> characters are
+to be mapped or not. If <strong>mode</strong> is <tt class="literal"><span class="pre">nil</span></tt> the mode is not changed.</p>
+<p>See also: <a class="reference" href="#chstr">chstr</a></p>
+</div>
+<div class="section" id="curses-map-keyboard">
+<h2><a class="toc-backref" href="#id66" name="curses-map-keyboard">curses.map_keyboard</a></h2>
+<pre class="literal-block">
+oldmode = curses.map_keyboard(mode)
+</pre>
+<p>This is a PDCurses specific (at the moment at least) that will attempt
+to make some keys behave like other curses implementations.</p>
+<p>It affects <a class="reference" href="#window-getch">window:getch</a>. For a consistent behaviour it is advised to
+turn it on.</p>
+<p><strong>mode</strong> is a boolean value indicating if keys are to be mapped or not.
+If <strong>mode</strong> is <tt class="literal"><span class="pre">nil</span></tt> the mode is not changed.</p>
+</div>
+</div>
+<div class="section" id="window">
+<h1><a class="toc-backref" href="#id9" name="window">window</a></h1>
+<div class="contents topic" id="id2">
+<ul class="simple">
+<li><a class="reference" href="#window-close" id="id67" name="id67">window:close</a></li>
+<li><a class="reference" href="#window-sub" id="id68" name="id68">window:sub</a></li>
+<li><a class="reference" href="#window-derive" id="id69" name="id69">window:derive</a></li>
+<li><a class="reference" href="#window-move-window" id="id70" name="id70">window:move_window</a></li>
+<li><a class="reference" href="#window-move-derived" id="id71" name="id71">window:move_derived</a></li>
+<li><a class="reference" href="#window-clone" id="id72" name="id72">window:clone</a></li>
+<li><a class="reference" href="#window-syncup" id="id73" name="id73">window:syncup</a></li>
+<li><a class="reference" href="#window-syncdown" id="id74" name="id74">window:syncdown</a></li>
+<li><a class="reference" href="#window-syncok" id="id75" name="id75">window:syncok</a></li>
+<li><a class="reference" href="#window-cursyncup" id="id76" name="id76">window:cursyncup</a></li>
+<li><a class="reference" href="#window-intrflush" id="id77" name="id77">window:intrflush</a></li>
+<li><a class="reference" href="#window-keypad" id="id78" name="id78">window:keypad</a></li>
+<li><a class="reference" href="#window-meta" id="id79" name="id79">window:meta</a></li>
+<li><a class="reference" href="#window-nodelay" id="id80" name="id80">window:nodelay</a></li>
+<li><a class="reference" href="#window-timeout" id="id81" name="id81">window:timeout</a></li>
+<li><a class="reference" href="#window-notimeout" id="id82" name="id82">window:notimeout</a></li>
+<li><a class="reference" href="#window-clearok" id="id83" name="id83">window:clearok</a></li>
+<li><a class="reference" href="#window-idlok" id="id84" name="id84">window:idlok</a></li>
+<li><a class="reference" href="#window-leaveok" id="id85" name="id85">window:leaveok</a></li>
+<li><a class="reference" href="#window-scrollok" id="id86" name="id86">window:scrollok</a></li>
+<li><a class="reference" href="#window-idcok" id="id87" name="id87">window:idcok</a></li>
+<li><a class="reference" href="#window-immedok" id="id88" name="id88">window:immedok</a></li>
+<li><a class="reference" href="#window-wsetscrreg" id="id89" name="id89">window:wsetscrreg</a></li>
+<li><a class="reference" href="#window-subpad" id="id90" name="id90">window:subpad</a></li>
+<li><a class="reference" href="#window-prefresh" id="id91" name="id91">window:prefresh</a></li>
+<li><a class="reference" href="#window-pnoutrefresh" id="id92" name="id92">window:pnoutrefresh</a></li>
+<li><a class="reference" href="#window-pechochar" id="id93" name="id93">window:pechochar</a></li>
+<li><a class="reference" href="#window-move" id="id94" name="id94">window:move</a></li>
+<li><a class="reference" href="#window-scroll" id="id95" name="id95">window:scroll</a></li>
+<li><a class="reference" href="#window-refresh" id="id96" name="id96">window:refresh</a></li>
+<li><a class="reference" href="#window-noutrefresh" id="id97" name="id97">window:noutrefresh</a></li>
+<li><a class="reference" href="#window-redraw" id="id98" name="id98">window:redraw</a></li>
+<li><a class="reference" href="#window-redraw-line" id="id99" name="id99">window:redraw_line</a></li>
+<li><a class="reference" href="#window-erase" id="id100" name="id100">window:erase</a></li>
+<li><a class="reference" href="#window-clear" id="id101" name="id101">window:clear</a></li>
+<li><a class="reference" href="#window-clear-to-bottom" id="id102" name="id102">window:clear_to_bottom</a></li>
+<li><a class="reference" href="#window-clear-to-eol" id="id103" name="id103">window:clear_to_eol</a></li>
+<li><a class="reference" href="#window-touch" id="id104" name="id104">window:touch</a></li>
+<li><a class="reference" href="#window-touch-line" id="id105" name="id105">window:touch_line</a></li>
+<li><a class="reference" href="#window-is-line-touched" id="id106" name="id106">window:is_line_touched</a></li>
+<li><a class="reference" href="#window-is-touched" id="id107" name="id107">window:is_touched</a></li>
+<li><a class="reference" href="#window-attrs" id="id108" name="id108">window:attrs</a></li>
+<li><a class="reference" href="#window-attroff" id="id109" name="id109">window:attroff</a></li>
+<li><a class="reference" href="#window-attron" id="id110" name="id110">window:attron</a></li>
+<li><a class="reference" href="#window-attrset" id="id111" name="id111">window:attrset</a></li>
+<li><a class="reference" href="#window-standout" id="id112" name="id112">window:standout</a></li>
+<li><a class="reference" href="#window-standend" id="id113" name="id113">window:standend</a></li>
+<li><a class="reference" href="#window-getch" id="id114" name="id114">window:getch</a></li>
+<li><a class="reference" href="#window-mvgetch" id="id115" name="id115">window:mvgetch</a></li>
+<li><a class="reference" href="#window-getyx" id="id116" name="id116">window:getyx</a></li>
+<li><a class="reference" href="#window-getparyx" id="id117" name="id117">window:getparyx</a></li>
+<li><a class="reference" href="#window-getbegyx" id="id118" name="id118">window:getbegyx</a></li>
+<li><a class="reference" href="#window-getmaxyx" id="id119" name="id119">window:getmaxyx</a></li>
+<li><a class="reference" href="#window-border" id="id120" name="id120">window:border</a></li>
+<li><a class="reference" href="#window-box" id="id121" name="id121">window:box</a></li>
+<li><a class="reference" href="#window-hline" id="id122" name="id122">window:hline</a></li>
+<li><a class="reference" href="#window-vline" id="id123" name="id123">window:vline</a></li>
+<li><a class="reference" href="#window-mvhline" id="id124" name="id124">window:mvhline</a></li>
+<li><a class="reference" href="#window-mvvline" id="id125" name="id125">window:mvvline</a></li>
+<li><a class="reference" href="#window-addch" id="id126" name="id126">window:addch</a></li>
+<li><a class="reference" href="#window-mvaddch" id="id127" name="id127">window:mvaddch</a></li>
+<li><a class="reference" href="#window-echoch" id="id128" name="id128">window:echoch</a></li>
+<li><a class="reference" href="#window-addchstr" id="id129" name="id129">window:addchstr</a></li>
+<li><a class="reference" href="#window-mvaddchstr" id="id130" name="id130">window:mvaddchstr</a></li>
+<li><a class="reference" href="#window-addstr" id="id131" name="id131">window:addstr</a></li>
+<li><a class="reference" href="#window-mvaddstr" id="id132" name="id132">window:mvaddstr</a></li>
+<li><a class="reference" href="#window-wbkgdset" id="id133" name="id133">window:wbkgdset</a></li>
+<li><a class="reference" href="#window-wbkgd" id="id134" name="id134">window:wbkgd</a></li>
+<li><a class="reference" href="#window-getbkgd" id="id135" name="id135">window:getbkgd</a></li>
+<li><a class="reference" href="#window-overlay" id="id136" name="id136">window:overlay</a></li>
+<li><a class="reference" href="#window-overwrite" id="id137" name="id137">window:overwrite</a></li>
+<li><a class="reference" href="#window-copy" id="id138" name="id138">window:copy</a></li>
+<li><a class="reference" href="#window-delch" id="id139" name="id139">window:delch</a></li>
+<li><a class="reference" href="#window-mvdelch" id="id140" name="id140">window:mvdelch</a></li>
+<li><a class="reference" href="#window-delete-line" id="id141" name="id141">window:delete_line</a></li>
+<li><a class="reference" href="#window-insert-line" id="id142" name="id142">window:insert_line</a></li>
+<li><a class="reference" href="#window-winsdelln" id="id143" name="id143">window:winsdelln</a></li>
+<li><a class="reference" href="#window-getstr" id="id144" name="id144">window:getstr</a></li>
+<li><a class="reference" href="#window-mvgetstr" id="id145" name="id145">window:mvgetstr</a></li>
+<li><a class="reference" href="#window-winch" id="id146" name="id146">window:winch</a></li>
+<li><a class="reference" href="#window-mvwinch" id="id147" name="id147">window:mvwinch</a></li>
+<li><a class="reference" href="#window-winchnstr" id="id148" name="id148">window:winchnstr</a></li>
+<li><a class="reference" href="#window-mvwinchnstr" id="id149" name="id149">window:mvwinchnstr</a></li>
+<li><a class="reference" href="#window-winnstr" id="id150" name="id150">window:winnstr</a></li>
+<li><a class="reference" href="#window-mvwinnstr" id="id151" name="id151">window:mvwinnstr</a></li>
+<li><a class="reference" href="#window-winsch" id="id152" name="id152">window:winsch</a></li>
+<li><a class="reference" href="#window-mvwinsch" id="id153" name="id153">window:mvwinsch</a></li>
+<li><a class="reference" href="#window-winsstr" id="id154" name="id154">window:winsstr</a></li>
+<li><a class="reference" href="#window-winsnstr" id="id155" name="id155">window:winsnstr</a></li>
+<li><a class="reference" href="#window-mvwinsstr" id="id156" name="id156">window:mvwinsstr</a></li>
+<li><a class="reference" href="#window-mvwinsnstr" id="id157" name="id157">window:mvwinsnstr</a></li>
+</ul>
+</div>
+<div class="section" id="window-close">
+<h2><a class="toc-backref" href="#id67" name="window-close">window:close</a></h2>
+<pre class="literal-block">
+window:close()
+</pre>
+<p>Deletes the named window, freeing all memory associated
+with it (it does not actually erase the window's screen image).</p>
+<dl>
+<dt>Note:</dt>
+<dd>Sub windows must be deleted before the main window can be
+deleted.</dd>
+</dl>
+</div>
+<div class="section" id="window-sub">
+<h2><a class="toc-backref" href="#id68" name="window-sub">window:sub</a></h2>
+<pre class="literal-block">
+wsub = w:sub(lines, columns, begin_y, begin_x)
+</pre>
+<p>Calling <a class="reference" href="#window-sub">window:sub</a> creates and returns a new curses <a class="reference" href="#window">window</a> with the
+given number of <strong>lines</strong> and <strong>columns</strong>. The window is at
+position (<strong>begin_y</strong>, <strong>begin_x</strong>) on the screen. (This position is relative
+to the screen, and not to the window <strong>w</strong>.) The window is made in  the
+middle of the window <strong>w</strong>, so that changes made to one window will
+affect both windows. The subwindow shares memory with the window orig.
+When  using this routine, it is necessary to call <a class="reference" href="#window-touch">window:touch</a> or <a class="reference" href="#window-touch-line">window:touch_line</a>
+on <strong>w</strong> before calling <a class="reference" href="#window-refresh">window:refresh</a> on the subwindow.</p>
+</div>
+<div class="section" id="window-derive">
+<h2><a class="toc-backref" href="#id69" name="window-derive">window:derive</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-move-window">
+<h2><a class="toc-backref" href="#id70" name="window-move-window">window:move_window</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-move-derived">
+<h2><a class="toc-backref" href="#id71" name="window-move-derived">window:move_derived</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-clone">
+<h2><a class="toc-backref" href="#id72" name="window-clone">window:clone</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-syncup">
+<h2><a class="toc-backref" href="#id73" name="window-syncup">window:syncup</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-syncdown">
+<h2><a class="toc-backref" href="#id74" name="window-syncdown">window:syncdown</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-syncok">
+<h2><a class="toc-backref" href="#id75" name="window-syncok">window:syncok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-cursyncup">
+<h2><a class="toc-backref" href="#id76" name="window-cursyncup">window:cursyncup</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-intrflush">
+<h2><a class="toc-backref" href="#id77" name="window-intrflush">window:intrflush</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-keypad">
+<h2><a class="toc-backref" href="#id78" name="window-keypad">window:keypad</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-meta">
+<h2><a class="toc-backref" href="#id79" name="window-meta">window:meta</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-nodelay">
+<h2><a class="toc-backref" href="#id80" name="window-nodelay">window:nodelay</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-timeout">
+<h2><a class="toc-backref" href="#id81" name="window-timeout">window:timeout</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-notimeout">
+<h2><a class="toc-backref" href="#id82" name="window-notimeout">window:notimeout</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-clearok">
+<h2><a class="toc-backref" href="#id83" name="window-clearok">window:clearok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-idlok">
+<h2><a class="toc-backref" href="#id84" name="window-idlok">window:idlok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-leaveok">
+<h2><a class="toc-backref" href="#id85" name="window-leaveok">window:leaveok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-scrollok">
+<h2><a class="toc-backref" href="#id86" name="window-scrollok">window:scrollok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-idcok">
+<h2><a class="toc-backref" href="#id87" name="window-idcok">window:idcok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-immedok">
+<h2><a class="toc-backref" href="#id88" name="window-immedok">window:immedok</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-wsetscrreg">
+<h2><a class="toc-backref" href="#id89" name="window-wsetscrreg">window:wsetscrreg</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-subpad">
+<h2><a class="toc-backref" href="#id90" name="window-subpad">window:subpad</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-prefresh">
+<h2><a class="toc-backref" href="#id91" name="window-prefresh">window:prefresh</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-pnoutrefresh">
+<h2><a class="toc-backref" href="#id92" name="window-pnoutrefresh">window:pnoutrefresh</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-pechochar">
+<h2><a class="toc-backref" href="#id93" name="window-pechochar">window:pechochar</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-move">
+<h2><a class="toc-backref" href="#id94" name="window-move">window:move</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-scroll">
+<h2><a class="toc-backref" href="#id95" name="window-scroll">window:scroll</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-refresh">
+<h2><a class="toc-backref" href="#id96" name="window-refresh">window:refresh</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-noutrefresh">
+<h2><a class="toc-backref" href="#id97" name="window-noutrefresh">window:noutrefresh</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-redraw">
+<h2><a class="toc-backref" href="#id98" name="window-redraw">window:redraw</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-redraw-line">
+<h2><a class="toc-backref" href="#id99" name="window-redraw-line">window:redraw_line</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-erase">
+<h2><a class="toc-backref" href="#id100" name="window-erase">window:erase</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-clear">
+<h2><a class="toc-backref" href="#id101" name="window-clear">window:clear</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-clear-to-bottom">
+<h2><a class="toc-backref" href="#id102" name="window-clear-to-bottom">window:clear_to_bottom</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-clear-to-eol">
+<h2><a class="toc-backref" href="#id103" name="window-clear-to-eol">window:clear_to_eol</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-touch">
+<h2><a class="toc-backref" href="#id104" name="window-touch">window:touch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-touch-line">
+<h2><a class="toc-backref" href="#id105" name="window-touch-line">window:touch_line</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-is-line-touched">
+<h2><a class="toc-backref" href="#id106" name="window-is-line-touched">window:is_line_touched</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-is-touched">
+<h2><a class="toc-backref" href="#id107" name="window-is-touched">window:is_touched</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-attrs">
+<h2><a class="toc-backref" href="#id108" name="window-attrs">window:attrs</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-attroff">
+<h2><a class="toc-backref" href="#id109" name="window-attroff">window:attroff</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-attron">
+<h2><a class="toc-backref" href="#id110" name="window-attron">window:attron</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-attrset">
+<h2><a class="toc-backref" href="#id111" name="window-attrset">window:attrset</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-standout">
+<h2><a class="toc-backref" href="#id112" name="window-standout">window:standout</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-standend">
+<h2><a class="toc-backref" href="#id113" name="window-standend">window:standend</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getch">
+<h2><a class="toc-backref" href="#id114" name="window-getch">window:getch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvgetch">
+<h2><a class="toc-backref" href="#id115" name="window-mvgetch">window:mvgetch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getyx">
+<h2><a class="toc-backref" href="#id116" name="window-getyx">window:getyx</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getparyx">
+<h2><a class="toc-backref" href="#id117" name="window-getparyx">window:getparyx</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getbegyx">
+<h2><a class="toc-backref" href="#id118" name="window-getbegyx">window:getbegyx</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getmaxyx">
+<h2><a class="toc-backref" href="#id119" name="window-getmaxyx">window:getmaxyx</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-border">
+<h2><a class="toc-backref" href="#id120" name="window-border">window:border</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-box">
+<h2><a class="toc-backref" href="#id121" name="window-box">window:box</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-hline">
+<h2><a class="toc-backref" href="#id122" name="window-hline">window:hline</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-vline">
+<h2><a class="toc-backref" href="#id123" name="window-vline">window:vline</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvhline">
+<h2><a class="toc-backref" href="#id124" name="window-mvhline">window:mvhline</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvvline">
+<h2><a class="toc-backref" href="#id125" name="window-mvvline">window:mvvline</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-addch">
+<h2><a class="toc-backref" href="#id126" name="window-addch">window:addch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvaddch">
+<h2><a class="toc-backref" href="#id127" name="window-mvaddch">window:mvaddch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-echoch">
+<h2><a class="toc-backref" href="#id128" name="window-echoch">window:echoch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-addchstr">
+<h2><a class="toc-backref" href="#id129" name="window-addchstr">window:addchstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvaddchstr">
+<h2><a class="toc-backref" href="#id130" name="window-mvaddchstr">window:mvaddchstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-addstr">
+<h2><a class="toc-backref" href="#id131" name="window-addstr">window:addstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvaddstr">
+<h2><a class="toc-backref" href="#id132" name="window-mvaddstr">window:mvaddstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-wbkgdset">
+<h2><a class="toc-backref" href="#id133" name="window-wbkgdset">window:wbkgdset</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-wbkgd">
+<h2><a class="toc-backref" href="#id134" name="window-wbkgd">window:wbkgd</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getbkgd">
+<h2><a class="toc-backref" href="#id135" name="window-getbkgd">window:getbkgd</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-overlay">
+<h2><a class="toc-backref" href="#id136" name="window-overlay">window:overlay</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-overwrite">
+<h2><a class="toc-backref" href="#id137" name="window-overwrite">window:overwrite</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-copy">
+<h2><a class="toc-backref" href="#id138" name="window-copy">window:copy</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-delch">
+<h2><a class="toc-backref" href="#id139" name="window-delch">window:delch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvdelch">
+<h2><a class="toc-backref" href="#id140" name="window-mvdelch">window:mvdelch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-delete-line">
+<h2><a class="toc-backref" href="#id141" name="window-delete-line">window:delete_line</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-insert-line">
+<h2><a class="toc-backref" href="#id142" name="window-insert-line">window:insert_line</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winsdelln">
+<h2><a class="toc-backref" href="#id143" name="window-winsdelln">window:winsdelln</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-getstr">
+<h2><a class="toc-backref" href="#id144" name="window-getstr">window:getstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvgetstr">
+<h2><a class="toc-backref" href="#id145" name="window-mvgetstr">window:mvgetstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winch">
+<h2><a class="toc-backref" href="#id146" name="window-winch">window:winch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinch">
+<h2><a class="toc-backref" href="#id147" name="window-mvwinch">window:mvwinch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winchnstr">
+<h2><a class="toc-backref" href="#id148" name="window-winchnstr">window:winchnstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinchnstr">
+<h2><a class="toc-backref" href="#id149" name="window-mvwinchnstr">window:mvwinchnstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winnstr">
+<h2><a class="toc-backref" href="#id150" name="window-winnstr">window:winnstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinnstr">
+<h2><a class="toc-backref" href="#id151" name="window-mvwinnstr">window:mvwinnstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winsch">
+<h2><a class="toc-backref" href="#id152" name="window-winsch">window:winsch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinsch">
+<h2><a class="toc-backref" href="#id153" name="window-mvwinsch">window:mvwinsch</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winsstr">
+<h2><a class="toc-backref" href="#id154" name="window-winsstr">window:winsstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-winsnstr">
+<h2><a class="toc-backref" href="#id155" name="window-winsnstr">window:winsnstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinsstr">
+<h2><a class="toc-backref" href="#id156" name="window-mvwinsstr">window:mvwinsstr</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="window-mvwinsnstr">
+<h2><a class="toc-backref" href="#id157" name="window-mvwinsnstr">window:mvwinsnstr</a></h2>
+<p>(TODO)</p>
+</div>
+</div>
+<div class="section" id="chstr">
+<h1><a class="toc-backref" href="#id10" name="chstr">chstr</a></h1>
+<p>Represents a buffered <strong>line</strong>. An array of type <tt class="literal"><span class="pre">chstr</span></tt> (curses internal type).</p>
+<p>When writing characters to the terminal, some characters are
+represented by numbers greater than 255 (0..255 being the normal
+limits for a character), so a new userdata object was created
+(for convenience) to make things easier when drawing to curses
+windows.</p>
+<p>See also: <a class="reference" href="#window">window</a></p>
+<div class="contents topic" id="id3">
+<ul class="simple">
+<li><a class="reference" href="#chstr-len" id="id158" name="id158">chstr:len</a></li>
+<li><a class="reference" href="#chstr-set-ch" id="id159" name="id159">chstr:set_ch</a></li>
+<li><a class="reference" href="#chstr-set-str" id="id160" name="id160">chstr:set_str</a></li>
+<li><a class="reference" href="#chstr-get" id="id161" name="id161">chstr:get</a></li>
+<li><a class="reference" href="#chstr-dup" id="id162" name="id162">chstr:dup</a></li>
+</ul>
+</div>
+<div class="section" id="chstr-len">
+<h2><a class="toc-backref" href="#id158" name="chstr-len">chstr:len</a></h2>
+<pre class="literal-block">
+len = chstr:len()
+</pre>
+<p>Returns the length of the <tt class="literal"><span class="pre">chstr</span></tt> object.</p>
+</div>
+<div class="section" id="chstr-set-ch">
+<h2><a class="toc-backref" href="#id159" name="chstr-set-ch">chstr:set_ch</a></h2>
+<pre class="literal-block">
+chstr:set_ch(index, ch, [attr, [rep]])
+</pre>
+<p>Assign a character to the position <strong>index</strong> of the <tt class="literal"><span class="pre">chstr</span></tt> object.
+<strong>attr</strong> is the attribute of the assigned character, if <tt class="literal"><span class="pre">nil</span></tt>
+it will have the value <tt class="literal"><span class="pre">curses.A_NORMAL</span></tt>.
+<strong>rep</strong> indicates the number of times the character is to be repeated,
+if it is <tt class="literal"><span class="pre">nil</span></tt> it will be <strong>1</strong>.</p>
+<p>Use this if you want to use the alternate character set for drawing.</p>
+<p>If the assigned positions are out of bounds, they are ignored.</p>
+<p>Example:</p>
+<pre class="literal-block">
+-- create a chstr object and fill it will ACS_VLINE characters
+str = curses.new_chstr(10)
+str:set_ch(0, curses.ACS_VLINE, curses.A_NORMAL, 10)
+</pre>
+</div>
+<div class="section" id="chstr-set-str">
+<h2><a class="toc-backref" href="#id160" name="chstr-set-str">chstr:set_str</a></h2>
+<pre class="literal-block">
+chstr:set_str(index, str, [attr, [rep]])
+</pre>
+<p>Assign a string to the position <strong>index</strong> of the <tt class="literal"><span class="pre">chstr</span></tt> object.
+<strong>attr</strong> is the attribute of the assigned string, if <tt class="literal"><span class="pre">nil</span></tt>
+it will have the value <tt class="literal"><span class="pre">curses.A_NORMAL</span></tt>.
+<strong>rep</strong> indicates the number of times the string is to be repeated,
+if it is <tt class="literal"><span class="pre">nil</span></tt> it will be <strong>1</strong>.</p>
+<p>If the assigned positions are out of bounds, they are truncated/ignored.</p>
+<p>Example:</p>
+<pre class="literal-block">
+-- create a chstr object and fill it with text
+str = curses.new_chstr(10)
+str:set_string(0, 'hello', curses.A_NORMAL, 3)
+
+-- str = 'hellohellohe'
+</pre>
+</div>
+<div class="section" id="chstr-get">
+<h2><a class="toc-backref" href="#id161" name="chstr-get">chstr:get</a></h2>
+<pre class="literal-block">
+ch, attr, color = chstr:get(index)
+</pre>
+<p>Return the contents of the <tt class="literal"><span class="pre">chstr</span></tt> object at the position <strong>index</strong>.</p>
+</div>
+<div class="section" id="chstr-dup">
+<h2><a class="toc-backref" href="#id162" name="chstr-dup">chstr:dup</a></h2>
+<pre class="literal-block">
+str2 = str:dup()
+</pre>
+<p>Create a duplicate (independent) of the <tt class="literal"><span class="pre">chstr</span></tt> object for manipulation.</p>
+</div>
+</div>
+<div class="section" id="text-functions">
+<h1><a class="toc-backref" href="#id11" name="text-functions">Text functions</a></h1>
+<p>Convenience functions, exported from the C standard library.</p>
+<div class="contents topic" id="id4">
+<ul class="simple">
+<li><a class="reference" href="#curses-isalnum" id="id163" name="id163">curses.isalnum</a></li>
+<li><a class="reference" href="#curses-isalpha" id="id164" name="id164">curses.isalpha</a></li>
+<li><a class="reference" href="#curses-iscntrl" id="id165" name="id165">curses.iscntrl</a></li>
+<li><a class="reference" href="#curses-isdigit" id="id166" name="id166">curses.isdigit</a></li>
+<li><a class="reference" href="#curses-isgraph" id="id167" name="id167">curses.isgraph</a></li>
+<li><a class="reference" href="#curses-islower" id="id168" name="id168">curses.islower</a></li>
+<li><a class="reference" href="#curses-isprint" id="id169" name="id169">curses.isprint</a></li>
+<li><a class="reference" href="#curses-ispunct" id="id170" name="id170">curses.ispunct</a></li>
+<li><a class="reference" href="#curses-isspace" id="id171" name="id171">curses.isspace</a></li>
+<li><a class="reference" href="#curses-isupper" id="id172" name="id172">curses.isupper</a></li>
+<li><a class="reference" href="#curses-isxdigit" id="id173" name="id173">curses.isxdigit</a></li>
+</ul>
+</div>
+<div class="section" id="curses-isalnum">
+<h2><a class="toc-backref" href="#id163" name="curses-isalnum">curses.isalnum</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isalpha">
+<h2><a class="toc-backref" href="#id164" name="curses-isalpha">curses.isalpha</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-iscntrl">
+<h2><a class="toc-backref" href="#id165" name="curses-iscntrl">curses.iscntrl</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isdigit">
+<h2><a class="toc-backref" href="#id166" name="curses-isdigit">curses.isdigit</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isgraph">
+<h2><a class="toc-backref" href="#id167" name="curses-isgraph">curses.isgraph</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-islower">
+<h2><a class="toc-backref" href="#id168" name="curses-islower">curses.islower</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isprint">
+<h2><a class="toc-backref" href="#id169" name="curses-isprint">curses.isprint</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-ispunct">
+<h2><a class="toc-backref" href="#id170" name="curses-ispunct">curses.ispunct</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isspace">
+<h2><a class="toc-backref" href="#id171" name="curses-isspace">curses.isspace</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isupper">
+<h2><a class="toc-backref" href="#id172" name="curses-isupper">curses.isupper</a></h2>
+<p>(TODO)</p>
+</div>
+<div class="section" id="curses-isxdigit">
+<h2><a class="toc-backref" href="#id173" name="curses-isxdigit">curses.isxdigit</a></h2>
+<p>(TODO)</p>
+</div>
+</div>
+<div class="section" id="links">
+<h1><a class="toc-backref" href="#id12" name="links">Links</a></h1>
+<ul class="simple">
+<li><a class="reference" href="http://www.opengroup.org/onlinepubs/007908799/cursesix.html">X/Open Curses, Issue 4 Version 2</a></li>
+<li><a class="reference" href="http://pdcurses.sourceforge.net/">PDCurses</a></li>
+<li><a class="reference" href="http://dickey.his.com/ncurses/ncurses.html">NCURSES - New Curses</a></li>
+</ul>
+</div>
+<div class="section" id="extended-table-of-contents">
+<h1><a class="toc-backref" href="#id13" name="extended-table-of-contents">Extended table of contents</a></h1>
+<div class="contents topic" id="id5">
+<p class="topic-title first"><a name="id5">Extended table of contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#usage" id="id174" name="id174">Usage</a></li>
+<li><a class="reference" href="#curses-functions" id="id175" name="id175">Curses functions</a><ul>
+<li><a class="reference" href="#curses-init" id="id176" name="id176">curses.init</a></li>
+<li><a class="reference" href="#curses-done" id="id177" name="id177">curses.done</a></li>
+<li><a class="reference" href="#curses-isdone" id="id178" name="id178">curses.isdone</a></li>
+<li><a class="reference" href="#curses-main-window" id="id179" name="id179">curses.main_window</a></li>
+<li><a class="reference" href="#curses-columns" id="id180" name="id180">curses.columns</a></li>
+<li><a class="reference" href="#curses-lines" id="id181" name="id181">curses.lines</a></li>
+<li><a class="reference" href="#curses-has-color" id="id182" name="id182">curses.has_color</a></li>
+<li><a class="reference" href="#curses-start-color" id="id183" name="id183">curses.start_color</a></li>
+<li><a class="reference" href="#curses-init-pair" id="id184" name="id184">curses.init_pair</a></li>
+<li><a class="reference" href="#curses-pair-content" id="id185" name="id185">curses.pair_content</a></li>
+<li><a class="reference" href="#curses-colors" id="id186" name="id186">curses.colors</a></li>
+<li><a class="reference" href="#curses-color-pairs" id="id187" name="id187">curses.color_pairs</a></li>
+<li><a class="reference" href="#curses-color-pair" id="id188" name="id188">curses.color_pair</a></li>
+<li><a class="reference" href="#curses-baudrate" id="id189" name="id189">curses.baudrate</a></li>
+<li><a class="reference" href="#curses-erase-char" id="id190" name="id190">curses.erase_char</a></li>
+<li><a class="reference" href="#curses-kill-char" id="id191" name="id191">curses.kill_char</a></li>
+<li><a class="reference" href="#curses-has-insert-char" id="id192" name="id192">curses.has_insert_char</a></li>
+<li><a class="reference" href="#curses-has-insert-line" id="id193" name="id193">curses.has_insert_line</a></li>
+<li><a class="reference" href="#curses-termattrs" id="id194" name="id194">curses.termattrs</a></li>
+<li><a class="reference" href="#curses-termname" id="id195" name="id195">curses.termname</a></li>
+<li><a class="reference" href="#curses-longname" id="id196" name="id196">curses.longname</a></li>
+<li><a class="reference" href="#curses-ripoffline" id="id197" name="id197">curses.ripoffline</a></li>
+<li><a class="reference" href="#curses-napms" id="id198" name="id198">curses.napms</a></li>
+<li><a class="reference" href="#curses-cursor-set" id="id199" name="id199">curses.cursor_set</a></li>
+<li><a class="reference" href="#curses-beep" id="id200" name="id200">curses.beep</a></li>
+<li><a class="reference" href="#curses-flash" id="id201" name="id201">curses.flash</a></li>
+<li><a class="reference" href="#curses-new-window" id="id202" name="id202">curses.new_window</a></li>
+<li><a class="reference" href="#curses-new-pad" id="id203" name="id203">curses.new_pad</a></li>
+<li><a class="reference" href="#curses-doupdate" id="id204" name="id204">curses.doupdate</a></li>
+<li><a class="reference" href="#curses-nl" id="id205" name="id205">curses.nl</a></li>
+<li><a class="reference" href="#curses-cbreak" id="id206" name="id206">curses.cbreak</a></li>
+<li><a class="reference" href="#curses-echo" id="id207" name="id207">curses.echo</a></li>
+<li><a class="reference" href="#curses-raw" id="id208" name="id208">curses.raw</a></li>
+<li><a class="reference" href="#curses-halfdelay" id="id209" name="id209">curses.halfdelay</a></li>
+<li><a class="reference" href="#curses-unctrl" id="id210" name="id210">curses.unctrl</a></li>
+<li><a class="reference" href="#curses-keyname" id="id211" name="id211">curses.keyname</a></li>
+<li><a class="reference" href="#curses-delay-output" id="id212" name="id212">curses.delay_output</a></li>
+<li><a class="reference" href="#curses-flush-input" id="id213" name="id213">curses.flush_input</a></li>
+<li><a class="reference" href="#curses-ungetch" id="id214" name="id214">curses.ungetch</a></li>
+<li><a class="reference" href="#curses-slk-init" id="id215" name="id215">curses.slk_init</a></li>
+<li><a class="reference" href="#curses-slk-set" id="id216" name="id216">curses.slk_set</a></li>
+<li><a class="reference" href="#curses-slk-refresh" id="id217" name="id217">curses.slk_refresh</a></li>
+<li><a class="reference" href="#curses-slk-noutrefresh" id="id218" name="id218">curses.slk_noutrefresh</a></li>
+<li><a class="reference" href="#curses-slk-label" id="id219" name="id219">curses.slk_label</a></li>
+<li><a class="reference" href="#curses-slk-clear" id="id220" name="id220">curses.slk_clear</a></li>
+<li><a class="reference" href="#curses-slk-restore" id="id221" name="id221">curses.slk_restore</a></li>
+<li><a class="reference" href="#curses-slk-touch" id="id222" name="id222">curses.slk_touch</a></li>
+<li><a class="reference" href="#curses-slk-attron" id="id223" name="id223">curses.slk_attron</a></li>
+<li><a class="reference" href="#curses-slk-attroff" id="id224" name="id224">curses.slk_attroff</a></li>
+<li><a class="reference" href="#curses-slk-attrset" id="id225" name="id225">curses.slk_attrset</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#lua-curses-specific" id="id226" name="id226">Lua Curses specific</a><ul>
+<li><a class="reference" href="#curses-new-chstr" id="id227" name="id227">curses.new_chstr</a></li>
+<li><a class="reference" href="#curses-map-output" id="id228" name="id228">curses.map_output</a></li>
+<li><a class="reference" href="#curses-map-keyboard" id="id229" name="id229">curses.map_keyboard</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#window" id="id230" name="id230">window</a><ul>
+<li><a class="reference" href="#window-close" id="id231" name="id231">window:close</a></li>
+<li><a class="reference" href="#window-sub" id="id232" name="id232">window:sub</a></li>
+<li><a class="reference" href="#window-derive" id="id233" name="id233">window:derive</a></li>
+<li><a class="reference" href="#window-move-window" id="id234" name="id234">window:move_window</a></li>
+<li><a class="reference" href="#window-move-derived" id="id235" name="id235">window:move_derived</a></li>
+<li><a class="reference" href="#window-clone" id="id236" name="id236">window:clone</a></li>
+<li><a class="reference" href="#window-syncup" id="id237" name="id237">window:syncup</a></li>
+<li><a class="reference" href="#window-syncdown" id="id238" name="id238">window:syncdown</a></li>
+<li><a class="reference" href="#window-syncok" id="id239" name="id239">window:syncok</a></li>
+<li><a class="reference" href="#window-cursyncup" id="id240" name="id240">window:cursyncup</a></li>
+<li><a class="reference" href="#window-intrflush" id="id241" name="id241">window:intrflush</a></li>
+<li><a class="reference" href="#window-keypad" id="id242" name="id242">window:keypad</a></li>
+<li><a class="reference" href="#window-meta" id="id243" name="id243">window:meta</a></li>
+<li><a class="reference" href="#window-nodelay" id="id244" name="id244">window:nodelay</a></li>
+<li><a class="reference" href="#window-timeout" id="id245" name="id245">window:timeout</a></li>
+<li><a class="reference" href="#window-notimeout" id="id246" name="id246">window:notimeout</a></li>
+<li><a class="reference" href="#window-clearok" id="id247" name="id247">window:clearok</a></li>
+<li><a class="reference" href="#window-idlok" id="id248" name="id248">window:idlok</a></li>
+<li><a class="reference" href="#window-leaveok" id="id249" name="id249">window:leaveok</a></li>
+<li><a class="reference" href="#window-scrollok" id="id250" name="id250">window:scrollok</a></li>
+<li><a class="reference" href="#window-idcok" id="id251" name="id251">window:idcok</a></li>
+<li><a class="reference" href="#window-immedok" id="id252" name="id252">window:immedok</a></li>
+<li><a class="reference" href="#window-wsetscrreg" id="id253" name="id253">window:wsetscrreg</a></li>
+<li><a class="reference" href="#window-subpad" id="id254" name="id254">window:subpad</a></li>
+<li><a class="reference" href="#window-prefresh" id="id255" name="id255">window:prefresh</a></li>
+<li><a class="reference" href="#window-pnoutrefresh" id="id256" name="id256">window:pnoutrefresh</a></li>
+<li><a class="reference" href="#window-pechochar" id="id257" name="id257">window:pechochar</a></li>
+<li><a class="reference" href="#window-move" id="id258" name="id258">window:move</a></li>
+<li><a class="reference" href="#window-scroll" id="id259" name="id259">window:scroll</a></li>
+<li><a class="reference" href="#window-refresh" id="id260" name="id260">window:refresh</a></li>
+<li><a class="reference" href="#window-noutrefresh" id="id261" name="id261">window:noutrefresh</a></li>
+<li><a class="reference" href="#window-redraw" id="id262" name="id262">window:redraw</a></li>
+<li><a class="reference" href="#window-redraw-line" id="id263" name="id263">window:redraw_line</a></li>
+<li><a class="reference" href="#window-erase" id="id264" name="id264">window:erase</a></li>
+<li><a class="reference" href="#window-clear" id="id265" name="id265">window:clear</a></li>
+<li><a class="reference" href="#window-clear-to-bottom" id="id266" name="id266">window:clear_to_bottom</a></li>
+<li><a class="reference" href="#window-clear-to-eol" id="id267" name="id267">window:clear_to_eol</a></li>
+<li><a class="reference" href="#window-touch" id="id268" name="id268">window:touch</a></li>
+<li><a class="reference" href="#window-touch-line" id="id269" name="id269">window:touch_line</a></li>
+<li><a class="reference" href="#window-is-line-touched" id="id270" name="id270">window:is_line_touched</a></li>
+<li><a class="reference" href="#window-is-touched" id="id271" name="id271">window:is_touched</a></li>
+<li><a class="reference" href="#window-attrs" id="id272" name="id272">window:attrs</a></li>
+<li><a class="reference" href="#window-attroff" id="id273" name="id273">window:attroff</a></li>
+<li><a class="reference" href="#window-attron" id="id274" name="id274">window:attron</a></li>
+<li><a class="reference" href="#window-attrset" id="id275" name="id275">window:attrset</a></li>
+<li><a class="reference" href="#window-standout" id="id276" name="id276">window:standout</a></li>
+<li><a class="reference" href="#window-standend" id="id277" name="id277">window:standend</a></li>
+<li><a class="reference" href="#window-getch" id="id278" name="id278">window:getch</a></li>
+<li><a class="reference" href="#window-mvgetch" id="id279" name="id279">window:mvgetch</a></li>
+<li><a class="reference" href="#window-getyx" id="id280" name="id280">window:getyx</a></li>
+<li><a class="reference" href="#window-getparyx" id="id281" name="id281">window:getparyx</a></li>
+<li><a class="reference" href="#window-getbegyx" id="id282" name="id282">window:getbegyx</a></li>
+<li><a class="reference" href="#window-getmaxyx" id="id283" name="id283">window:getmaxyx</a></li>
+<li><a class="reference" href="#window-border" id="id284" name="id284">window:border</a></li>
+<li><a class="reference" href="#window-box" id="id285" name="id285">window:box</a></li>
+<li><a class="reference" href="#window-hline" id="id286" name="id286">window:hline</a></li>
+<li><a class="reference" href="#window-vline" id="id287" name="id287">window:vline</a></li>
+<li><a class="reference" href="#window-mvhline" id="id288" name="id288">window:mvhline</a></li>
+<li><a class="reference" href="#window-mvvline" id="id289" name="id289">window:mvvline</a></li>
+<li><a class="reference" href="#window-addch" id="id290" name="id290">window:addch</a></li>
+<li><a class="reference" href="#window-mvaddch" id="id291" name="id291">window:mvaddch</a></li>
+<li><a class="reference" href="#window-echoch" id="id292" name="id292">window:echoch</a></li>
+<li><a class="reference" href="#window-addchstr" id="id293" name="id293">window:addchstr</a></li>
+<li><a class="reference" href="#window-mvaddchstr" id="id294" name="id294">window:mvaddchstr</a></li>
+<li><a class="reference" href="#window-addstr" id="id295" name="id295">window:addstr</a></li>
+<li><a class="reference" href="#window-mvaddstr" id="id296" name="id296">window:mvaddstr</a></li>
+<li><a class="reference" href="#window-wbkgdset" id="id297" name="id297">window:wbkgdset</a></li>
+<li><a class="reference" href="#window-wbkgd" id="id298" name="id298">window:wbkgd</a></li>
+<li><a class="reference" href="#window-getbkgd" id="id299" name="id299">window:getbkgd</a></li>
+<li><a class="reference" href="#window-overlay" id="id300" name="id300">window:overlay</a></li>
+<li><a class="reference" href="#window-overwrite" id="id301" name="id301">window:overwrite</a></li>
+<li><a class="reference" href="#window-copy" id="id302" name="id302">window:copy</a></li>
+<li><a class="reference" href="#window-delch" id="id303" name="id303">window:delch</a></li>
+<li><a class="reference" href="#window-mvdelch" id="id304" name="id304">window:mvdelch</a></li>
+<li><a class="reference" href="#window-delete-line" id="id305" name="id305">window:delete_line</a></li>
+<li><a class="reference" href="#window-insert-line" id="id306" name="id306">window:insert_line</a></li>
+<li><a class="reference" href="#window-winsdelln" id="id307" name="id307">window:winsdelln</a></li>
+<li><a class="reference" href="#window-getstr" id="id308" name="id308">window:getstr</a></li>
+<li><a class="reference" href="#window-mvgetstr" id="id309" name="id309">window:mvgetstr</a></li>
+<li><a class="reference" href="#window-winch" id="id310" name="id310">window:winch</a></li>
+<li><a class="reference" href="#window-mvwinch" id="id311" name="id311">window:mvwinch</a></li>
+<li><a class="reference" href="#window-winchnstr" id="id312" name="id312">window:winchnstr</a></li>
+<li><a class="reference" href="#window-mvwinchnstr" id="id313" name="id313">window:mvwinchnstr</a></li>
+<li><a class="reference" href="#window-winnstr" id="id314" name="id314">window:winnstr</a></li>
+<li><a class="reference" href="#window-mvwinnstr" id="id315" name="id315">window:mvwinnstr</a></li>
+<li><a class="reference" href="#window-winsch" id="id316" name="id316">window:winsch</a></li>
+<li><a class="reference" href="#window-mvwinsch" id="id317" name="id317">window:mvwinsch</a></li>
+<li><a class="reference" href="#window-winsstr" id="id318" name="id318">window:winsstr</a></li>
+<li><a class="reference" href="#window-winsnstr" id="id319" name="id319">window:winsnstr</a></li>
+<li><a class="reference" href="#window-mvwinsstr" id="id320" name="id320">window:mvwinsstr</a></li>
+<li><a class="reference" href="#window-mvwinsnstr" id="id321" name="id321">window:mvwinsnstr</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#chstr" id="id322" name="id322">chstr</a><ul>
+<li><a class="reference" href="#chstr-len" id="id323" name="id323">chstr:len</a></li>
+<li><a class="reference" href="#chstr-set-ch" id="id324" name="id324">chstr:set_ch</a></li>
+<li><a class="reference" href="#chstr-set-str" id="id325" name="id325">chstr:set_str</a></li>
+<li><a class="reference" href="#chstr-get" id="id326" name="id326">chstr:get</a></li>
+<li><a class="reference" href="#chstr-dup" id="id327" name="id327">chstr:dup</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#text-functions" id="id328" name="id328">Text functions</a><ul>
+<li><a class="reference" href="#curses-isalnum" id="id329" name="id329">curses.isalnum</a></li>
+<li><a class="reference" href="#curses-isalpha" id="id330" name="id330">curses.isalpha</a></li>
+<li><a class="reference" href="#curses-iscntrl" id="id331" name="id331">curses.iscntrl</a></li>
+<li><a class="reference" href="#curses-isdigit" id="id332" name="id332">curses.isdigit</a></li>
+<li><a class="reference" href="#curses-isgraph" id="id333" name="id333">curses.isgraph</a></li>
+<li><a class="reference" href="#curses-islower" id="id334" name="id334">curses.islower</a></li>
+<li><a class="reference" href="#curses-isprint" id="id335" name="id335">curses.isprint</a></li>
+<li><a class="reference" href="#curses-ispunct" id="id336" name="id336">curses.ispunct</a></li>
+<li><a class="reference" href="#curses-isspace" id="id337" name="id337">curses.isspace</a></li>
+<li><a class="reference" href="#curses-isupper" id="id338" name="id338">curses.isupper</a></li>
+<li><a class="reference" href="#curses-isxdigit" id="id339" name="id339">curses.isxdigit</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#links" id="id340" name="id340">Links</a></li>
+<li><a class="reference" href="#extended-table-of-contents" id="id341" name="id341">Extended table of contents</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr class="footer" />
+<div class="footer">
+<a class="reference" href="lcurses.txt">View document source</a>.
+Generated on: 2004-08-29 20:20 UTC.
+Generated by <a class="reference" href="http://docutils.sourceforge.net/">Docutils</a> from <a class="reference" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> source.
+</div>
+</body>
+</html>

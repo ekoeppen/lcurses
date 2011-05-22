@@ -1,0 +1,1156 @@
+
+============================
+ LuaCurses reference manual
+============================
+
+:Author: Tiago Dionizio
+:Contact: tngd@mega.ist.utl.pt
+:Status: This is a "work in progress"
+:Date: $Date: 2004/08/29 20:22:06 $
+:Version: 1a
+
+LuaCurses provides an interface to the curses system.
+It works as a console application.
+
+
+The current implementation was developed using:
+    - ncurses 5.4 on linux
+    - PDCurses 2.6 on win32
+
+.. contents::
+    :backlinks: entry
+    :depth: 1
+
+Usage
+=====
+
+To load the Lua Curses library execute:
+
+::
+
+    require('curses')
+
+When loaded, it will create a new global variable of type table
+``curses``.
+
+
+Curses functions
+================
+
+Functions directly related to the curses API.
+
+.. contents:: Member functions
+    :backlinks: entry
+    :local:
+
+curses.init
+-----------
+Determines the terminal type and initializes all curses data structures.
+It also causes the first call to refresh to clear the screen.
+
+If errors occur, curses.init_ writes an appropriate error
+message to standard error and exits; otherwise, an user data object
+is returned representing the main window.
+
+Before you call any other curses functions curses.init_
+must be called to make sure you access the correct information (with some exceptions like
+curses.slk_init_ and curses.ripoffline_).
+
+See also: curses.main_window_ window_
+
+curses.done
+-----------
+A program should always call curses.done_ before exiting or escaping from
+curses mode temporarily.  This routine restores tty modes, moves the
+cursor to the lower left-hand corner of the screen and resets the
+terminal into the proper non-visual mode. Calling `window:refresh`_ or
+curses.doupdate_ after a temporary escape causes the program to resume
+visual mode.
+
+See also: curses.init_
+
+curses.isdone
+-------------
+The curses.isdone_ routine returns ``true`` if
+curses.done_ has been called without any
+subsequent calls to `window:refresh`_ or
+curses.doupdate_, and ``false`` otherwise.
+
+curses.main_window
+------------------
+Returns an user data object representing the main window.
+
+See also: curses.init_ window_
+
+curses.columns
+--------------
+Returns the number of columns of the terminal.
+
+
+curses.lines
+------------
+Returns the number of lines of the terminal.
+
+curses.has_color
+----------------
+It returns ``true`` if the terminal can manipulate colors; otherwise, it
+returns ``false``. This routine facilitates writing terminal-independent
+programs. For example, a programmer can use it to decide whether to use
+color or some other video attribute.
+
+Note on using colors:
+
+    Curses support color attributes on terminals with that capability. To use
+    these routines curses.start_color_ must be called, usually right
+    after curses.init_.
+    Colors are always used in pairs (referred to as color-pairs).  A color-pair
+    consists of a foreground color (for characters) and a background color (for
+    the blank field on which the characters are displayed).  A programmer
+    initializes a color-pair with the routine curses.init_pair_.
+    After it has been initialized, curses.color_pair_ can be
+    used as a new video attribute.
+
+curses.start_color
+------------------
+It must be called if the programmer wants to use colors, and before any
+other color manipulation routine is called.  It is good practice to call
+this routine right after curses.init_. curses.start_color_
+initializes eight basic colors (black, red, green, yellow, blue,
+magenta, cyan, and white), and values, returned by curses.colors_
+and curses.color_pairs_ (respectively defining the maximum
+number of colors and color-pairs the terminal can support).
+It also restores the colors on the terminal to the values they had when
+the terminal was just turned on.
+
+Returns ``false`` in case of error, ``true`` otherwise.
+
+
+curses.init_pair
+----------------
+::
+
+    curses.init_pair(color_pair_number, foreground_color, background_color)
+
+The curses.init_pair_ routine changes the definition of a color-pair.  It
+takes three arguments: the number of the color-pair to be changed, the
+foreground color number, and the background color number.  For portable
+applications:
+
+    - The value of the first argument must be between 1 and
+      curses.color_pairs_ - 1.
+
+    - The value of the second and third arguments must be between 0
+      and curses.colors_ (the 0 color pair is wired to white on black and
+      cannot be changed).
+
+If the color-pair was previously initialized, the screen is refreshed and
+all occurrences of that color-pair are changed to the new definition.
+
+Returns ``false`` in case of error, ``true`` otherwise.
+
+curses.pair_content
+-------------------
+::
+
+    fg, bg = curses.pair_content(color_pair_number)
+
+This routine allows programmers to find out what colors a given color-pair consists of.
+
+In case of success, it returns two numbers defining the foreground color
+and the background color respectively.
+
+Returns ``nil`` in case of error.
+
+See also: curses.colors_
+
+curses.colors
+-------------
+Returns the maximum number of colors the terminal can support.
+
+curses.color_pairs
+------------------
+Returns the maximum number of color pairs the terminal can support.
+
+curses.color_pair
+-----------------
+::
+
+    syntax: attribute = curses.color_pair(color_pair_number)
+
+Returns a number that can be used as a video attribute.
+
+curses.baudrate
+---------------
+The curses.baudrate_ routine returns the output speed
+of the terminal.  The number returned is in bits per second, for
+example 9600, and is a number (integer).
+
+curses.erase_char
+-----------------
+The curses.erase_char_ routine returns the user's current erase character.
+
+
+curses.kill_char
+----------------
+The curses.kill_char_ routine returns the user's current line kill character.
+
+curses.has_insert_char
+----------------------
+The curses.has_insert_char_ routine returns ``true`` if the terminal has insert
+and delete character capabilities.
+
+curses.has_insert_line
+----------------------
+The curses.has_insert_line_ routine returns ``true`` if the terminal has insert
+and delete line capabilities, or can simulate them using scrolling
+regions.  This might be used to determine if it would be appropriate to
+turn on physical scrolling using `window:scrollok`_.
+
+curses.termattrs
+----------------
+Return a logical **or** (binary or) of all video attributes supported by the terminal
+using curses.A_xxx constants.
+
+To check for a specific attribute, pass the attribute value to
+<code>curses.termattrs()</code>.  It will return true if the attribute is supported.
+
+This information is useful when a curses program needs complete control
+over the appearance of the screen.
+
+::
+
+    syntax: attributes = curses.termattrs()
+    syntax: has_attribute = curses.termattrs(attribute)
+
+
+curses.termname
+---------------
+The curses.termname_ routine returns the value of the environmental variable
+TERM (truncated to 14 characters).
+
+curses.longname
+---------------
+The curses.longname_ routine returns a verbose description of the current
+terminal. The maximum length of a verbose description is 128 characters.
+It is defined only after the call to curses.init_.
+
+curses.ripoffline
+-----------------
+::
+
+    function ripline(window, columns)
+        -- do something with the window (line)
+    end
+
+    top = true -- take a line from the top of the screen
+    curses.ripoffline(top, ripline)
+
+The ripoffline routine provides access to the same  facility that
+curses.slk_init_ uses to reduce the size of the screen.
+curses.ripoffline_ must be called before curses.init_.
+If **top** is ``true``, a line is removed from the top
+of the screen; if **top** is ``false``, a line is removed from the bottom.
+
+When this is done inside curses.init_, the function supplied by the user is
+called with two arguments: a user data object representing the one-line
+window that has been allocated and a number with the number of columns
+in the window.  Inside this initialization routine, the values of curses.columns_
+and curses.lines_ are not guaranteed to be accurate and
+`window:refresh`_ or curses.doupdate_ must not be called.
+It is allowable to call `window:noutrefresh`_ during the initialization routine.
+
+curses.napms
+------------
+::
+
+    ms = 1000 -- sleep for 1 second
+    curses.sleep(ms)
+
+Sleep for **ms** milliseconds.
+
+curses.cursor_set
+-----------------
+::
+
+    previous_state = curses.cursor_set(1)
+
+
+The curses.cursor_set_ routine sets the cursor state to invisible, normal, or
+very visible for visibility equal to 0, 1, or 2 respectively.  If the
+terminal supports the visibility  requested, the previous cursor state
+is returned; otherwise, ``nil`` is returned.
+
+curses.beep
+-----------
+The curses.beep_ and curses.flash_
+routines are used to alert the terminal user.
+The routine beep sounds an audible alarm on the terminal, if possible;
+otherwise it flashes the screen (visible bell).  The routine flash
+flashes the screen, and if that is not possible, sounds the alert.  If
+neither alert is possible, nothing happens. Nearly all terminals have an
+audible alert (bell or beep), but only some can flash the screen.
+
+::
+
+    curses.beep()   -- terminal bell
+    curses.flash()  -- flash screen
+
+
+curses.flash
+------------
+See curses.beep_.
+
+
+curses.new_window
+-----------------
+::
+
+    window = curses.new_window(lines, columns, y, x)
+
+Calling curses.new_window_ creates and returns an user
+data object representing the new window with the given number of lines
+and columns.  The upper left-hand corner of the window is at line
+**y**, column **x**.  If either **lines** or **columns** is zero, they
+default to ``curses.lines() - y``
+and ``curses.columns() - x``.
+A new full-screen window is created by calling
+``curses.new_window(0,0,0,0)``.
+
+See also: curses.lines_ curses.columns_ window_ curses.new_pad_
+
+curses.new_pad
+--------------
+::
+
+    pad = curses.new_pad(lines, columns)
+
+The curses.new_pad_ routine creates and returns an user data object
+representing the new pad data structure with the given number of lines,
+**lines**, and columns, **columns**.  A pad is like a window, except that it is
+not restricted by the screen size, and is not necessarily associated
+with a particular part of the screen.  Pads can be used when a large
+window is needed, and only a part of the window will be on the screen at
+one time.  Automatic refreshes of pads (e.g., from scrolling or echoing
+of input) do not occur.  It is not legal to call `window:refresh`_ with a
+pad as an argument; the routines `window:prefresh`_ or `window:pnoutrefresh`_
+should be called instead.  Note that these routines require additional
+parameters to specify the part of the pad to be displayed and the
+location on the screen to be used for the display.
+
+See also: curses.new_window_ window_
+
+curses.doupdate
+---------------
+Call curses.doupdate_ to update the physical screen with the actual changes.
+
+See also: `window:refresh`_
+
+
+curses.nl
+---------
+The curses.nl_ routine control whether the underlying
+display device translates the return key into newline on
+input, and whether it translates newline into return  and
+line-feed  on output (in either case, the call ``window:addch('\n')``
+does the equivalent of return and line feed on the virtual
+screen). Initially, these translations do occur. If you
+disable them using ``curses.nl(false)``, curses will be
+able to make  better use of the line-feed capability, resulting in faster
+cursor motion. Also, curses will then be able to detect the return key.
+
+See also: `window:addch`_
+
+
+curses.cbreak
+-------------
+::
+
+    curses.cbreak(mode)
+
+Normally, the tty driver buffers typed characters until a newline or
+carriage return is typed.  The ``curses.cbreak(true)`` routine disables line
+buffering and erase/kill character-processing (interrupt and flow
+control characters are unaffected), making characters typed by the user
+immediately available to the program.  The ``curses.cbreak(false)`` routine returns
+the terminal to normal (cooked) mode.
+
+Initially the terminal may or may not be in ``curses.cbreak(true)`` mode, as the
+mode is inherited; therefore, a program should call curses.cbreak_ explicitly.
+Most interactive programs using curses set the ``curses.cbreak(true)`` mode.  Note
+that cbreak overrides curses.raw_.
+
+See also: curses.halfdelay_
+
+curses.echo
+-----------
+::
+
+    curses.echo(mode)
+
+The curses.echo_ routine control whether characters typed by the user are
+echoed by `window:getch`_ as they are typed. Echoing by the tty driver
+is always disabled, but initially getch is in echo mode, so
+characters typed are echoed. Authors of most interactive programs
+prefer to do their own echoing in a controlled area of the screen, or
+not to echo at all, so they disable echoing by calling ``curses.echo(false)``.
+
+curses.raw
+----------
+::
+
+    curses.raw(mode)
+
+The curses.raw_ routine place the terminal into or out of raw mode.
+Raw mode is similar to curses.cbreak_ mode, in that
+characters typed are immediately passed through to the
+user program. The differences are that in raw mode, the
+interrupt, quit, suspend, and flow control characters are
+all passed through uninterpreted, instead of generating  a
+signal. The behavior of the BREAK key depends on other
+bits in the tty driver that are not set by curses.
+
+
+curses.halfdelay
+----------------
+::
+
+    curses.halfdelay(tenths)
+
+The curses.halfdelay_ routine is used for half-delay mode, which
+is similar to cbreak mode in that characters typed by the
+user are immediately available to the program. However,
+after blocking for **tenths** tenths of seconds, ``false`` is
+returned  if  nothing has been typed.  The value of **tenths**
+must be a number between 1 and 255.  Use ``curses.cbreak(false)`` to leave
+half-delay mode.
+
+See also: curses.cbreak_
+
+curses.unctrl
+-------------
+::
+
+    str = curses.unctrl(ch)
+
+
+The curses.unctrl_ routine returns a string which is a
+printable representation of the character **ch**, ignoring
+attributes. Control characters are displayed in the ``^X``
+notation. Printing characters are displayed as is.
+
+curses.keyname
+--------------
+::
+
+    keyname = curses.keyname(key)
+
+The curses.keyname_ routine returns a string corresponding
+to the key **key**.  Control characters are displayed in the
+``^X`` notation. Values above 128 are either meta characters,
+shown in the ``M-X`` notation, or the names of function keys,
+or ``nil``.
+
+curses.delay_output
+-------------------
+::
+
+    curses.delay_output(ms)
+
+The curses.delay_output_ routine inserts an **ms**
+millisecond pause in output. This routine should not be used extensively
+because padding characters are used rather than a CPU pause.
+
+curses.flush_input
+------------------
+The curses.flush_input_ routine throws away any typeahead that has
+been typed by the user and has not yet been read by the program.
+
+curses.ungetch
+--------------
+::
+
+    curses.ungetch(ch)
+
+The curses.ungetch routine places **ch** back
+onto the input queue to be returned by the next call to
+`window:getch`_. There is just one input queue for all windows.
+
+curses.slk_init
+---------------
+::
+
+    format = 0 -- arrange labels in 3-2-3 arrangement
+    ok = curses.slk_init(format)
+
+The curses.slk_init_ routine must be called before curses.init_ is
+called. If curses.init_ eventually uses a line from curses.main_window_
+to emulate the
+soft labels, then **format** determines how the labels are arranged on the
+screen.  Setting **format** to 0 indicates a 3-2-3 arrangement of the labels,
+1 indicates a 4-4 arrangement and 2 indicates the PC like 4-4-4 mode.
+If **format** is set to 3, it is again the PC like 4-4-4 mode, but in addition
+an index line is generated, helping the user to identify the key numbers easily.
+
+curses.slk_set
+--------------
+::
+
+    ok = curses.slk_set(labnum, label, format)
+
+The curses.slk_set_ routine requires **labnum** to be a label number,
+from 1 to 8 (resp.  12); **label**  must be the string
+to be put on the label, up to
+eight (resp. five) characters in length. **format**
+is either 0, 1, or 2, indicating
+whether the label is  to be left-justified, centered, or
+right-justified, respectively, within the label.
+
+
+
+curses.slk_refresh
+------------------
+The curses.slk_refresh_ and curses.slk_noutrefresh_ routines
+correspond to the `window:refresh`_ and `window:noutrefresh`_
+routines.
+
+curses.slk_noutrefresh
+----------------------
+See curses.slk_refresh_.
+
+curses.slk_label
+----------------
+::
+
+    label = curses.slk_label(labnum)
+
+The curses.slk_label_ routine returns the current label for label
+number **labnum**, with leading and trailing blanks stripped.
+
+curses.slk_clear
+----------------
+The curses.slk_clear_ routine clears the soft labels from the screen.
+
+curses.slk_restore
+------------------
+The curses.slk_restore_ routine restores the soft labels to the screen after a
+curses.slk_clear_ has been performed.
+
+
+curses.slk_touch
+----------------
+The curses.slk_touch_ routine forces all the soft labels to be output the  next
+time a curses.slk_noutrefresh_ is performed.
+
+
+curses.slk_attron
+-----------------
+The curses.slk_attron_, curses.slk_attrset_, curses.slk_attroff_
+have an effect only if soft  labels are simulated on the
+bottom line of the screen.
+
+curses.slk_attroff
+------------------
+See curses.slk_attron_.
+
+curses.slk_attrset
+------------------
+See curses.slk_attron_.
+
+
+Lua Curses specific
+===================
+
+Functions that are implemented in lua curses for convenience or to
+provide an easier way to do things.
+
+.. contents::
+    :backlinks: entry
+    :local:
+
+curses.new_chstr
+----------------
+::
+
+    len = 10
+    chstr = curses.new_chstr(len) -- create chstr object with len positions to use
+
+Creates a new ``chstr`` object to use as a buffered line to draw into.
+It will have **len** positions to use.
+
+See also: chstr_
+
+curses.map_output
+-----------------
+::
+
+    oldmode = curses.map_output(mode)
+
+Maps the curses **chstr** characters to a character that has a printable
+representation if that is not the case.
+
+**mode** is a boolean value indicating if **chstr** characters are
+to be mapped or not. If **mode** is ``nil`` the mode is not changed.
+
+See also: chstr_
+
+curses.map_keyboard
+-------------------
+::
+
+    oldmode = curses.map_keyboard(mode)
+
+This is a PDCurses specific (at the moment at least) that will attempt
+to make some keys behave like other curses implementations.
+
+It affects `window:getch`_. For a consistent behaviour it is advised to
+turn it on.
+
+**mode** is a boolean value indicating if keys are to be mapped or not.
+If **mode** is ``nil`` the mode is not changed.
+
+window
+======
+
+.. contents::
+    :backlinks: entry
+    :local:
+
+window:close
+------------
+::
+
+    window:close()
+
+Deletes the named window, freeing all memory associated
+with it (it does not actually erase the window's screen image).
+
+Note:
+    Sub windows must be deleted before the main window can be
+    deleted.
+
+window:sub
+----------
+::
+
+    wsub = w:sub(lines, columns, begin_y, begin_x)
+
+Calling `window:sub`_ creates and returns a new curses window_ with the
+given number of **lines** and **columns**. The window is at
+position (**begin_y**, **begin_x**) on the screen. (This position is relative
+to the screen, and not to the window **w**.) The window is made in  the
+middle of the window **w**, so that changes made to one window will
+affect both windows. The subwindow shares memory with the window orig.
+When  using this routine, it is necessary to call `window:touch`_ or `window:touch_line`_
+on **w** before calling `window:refresh`_ on the subwindow.
+
+
+window:derive
+-------------
+(TODO)
+
+window:move_window
+------------------
+(TODO)
+
+window:move_derived
+-------------------
+(TODO)
+
+window:clone
+------------
+(TODO)
+
+window:syncup
+-------------
+(TODO)
+
+window:syncdown
+---------------
+(TODO)
+
+window:syncok
+-------------
+(TODO)
+
+window:cursyncup
+----------------
+(TODO)
+
+window:intrflush
+----------------
+(TODO)
+
+window:keypad
+-------------
+(TODO)
+
+window:meta
+-----------
+(TODO)
+
+window:nodelay
+--------------
+(TODO)
+
+window:timeout
+--------------
+(TODO)
+
+window:notimeout
+----------------
+(TODO)
+
+window:clearok
+--------------
+(TODO)
+
+window:idlok
+------------
+(TODO)
+
+window:leaveok
+--------------
+(TODO)
+
+window:scrollok
+---------------
+(TODO)
+
+window:idcok
+------------
+(TODO)
+
+window:immedok
+--------------
+(TODO)
+
+window:wsetscrreg
+-----------------
+(TODO)
+
+window:subpad
+-------------
+(TODO)
+
+window:prefresh
+---------------
+(TODO)
+
+window:pnoutrefresh
+-------------------
+(TODO)
+
+window:pechochar
+----------------
+(TODO)
+
+window:move
+-----------
+(TODO)
+
+window:scroll
+-------------
+(TODO)
+
+window:refresh
+--------------
+(TODO)
+
+window:noutrefresh
+------------------
+(TODO)
+
+window:redraw
+-------------
+(TODO)
+
+window:redraw_line
+------------------
+(TODO)
+
+window:erase
+------------
+(TODO)
+
+window:clear
+------------
+(TODO)
+
+window:clear_to_bottom
+----------------------
+(TODO)
+
+window:clear_to_eol
+-------------------
+(TODO)
+
+window:touch
+------------
+(TODO)
+
+window:touch_line
+-----------------
+(TODO)
+
+window:is_line_touched
+----------------------
+(TODO)
+
+window:is_touched
+-----------------
+(TODO)
+
+window:attrs
+------------
+(TODO)
+
+window:attroff
+--------------
+(TODO)
+
+window:attron
+-------------
+(TODO)
+
+window:attrset
+--------------
+(TODO)
+
+window:standout
+---------------
+(TODO)
+
+window:standend
+---------------
+(TODO)
+
+window:getch
+------------
+(TODO)
+
+window:mvgetch
+--------------
+(TODO)
+
+window:getyx
+------------
+(TODO)
+
+window:getparyx
+---------------
+(TODO)
+
+window:getbegyx
+---------------
+(TODO)
+
+window:getmaxyx
+---------------
+(TODO)
+
+window:border
+-------------
+(TODO)
+
+window:box
+----------
+(TODO)
+
+window:hline
+------------
+(TODO)
+
+window:vline
+------------
+(TODO)
+
+window:mvhline
+--------------
+(TODO)
+
+window:mvvline
+--------------
+(TODO)
+
+window:addch
+------------
+(TODO)
+
+window:mvaddch
+--------------
+(TODO)
+
+window:echoch
+-------------
+(TODO)
+
+window:addchstr
+---------------
+(TODO)
+
+window:mvaddchstr
+-----------------
+(TODO)
+
+window:addstr
+-------------
+(TODO)
+
+window:mvaddstr
+---------------
+(TODO)
+
+window:wbkgdset
+---------------
+(TODO)
+
+window:wbkgd
+------------
+(TODO)
+
+window:getbkgd
+--------------
+(TODO)
+
+window:overlay
+--------------
+(TODO)
+
+window:overwrite
+----------------
+(TODO)
+
+window:copy
+-----------
+(TODO)
+
+window:delch
+------------
+(TODO)
+
+window:mvdelch
+--------------
+(TODO)
+
+window:delete_line
+------------------
+(TODO)
+
+window:insert_line
+------------------
+(TODO)
+
+window:winsdelln
+----------------
+(TODO)
+
+window:getstr
+-------------
+(TODO)
+
+window:mvgetstr
+---------------
+(TODO)
+
+window:winch
+------------
+(TODO)
+
+window:mvwinch
+--------------
+(TODO)
+
+window:winchnstr
+----------------
+(TODO)
+
+window:mvwinchnstr
+------------------
+(TODO)
+
+window:winnstr
+--------------
+(TODO)
+
+window:mvwinnstr
+----------------
+(TODO)
+
+window:winsch
+-------------
+(TODO)
+
+window:mvwinsch
+---------------
+(TODO)
+
+window:winsstr
+--------------
+(TODO)
+
+window:winsnstr
+---------------
+(TODO)
+
+window:mvwinsstr
+----------------
+(TODO)
+
+window:mvwinsnstr
+-----------------
+(TODO)
+
+chstr
+=====
+
+Represents a buffered **line**. An array of type ``chstr`` (curses internal type).
+
+When writing characters to the terminal, some characters are
+represented by numbers greater than 255 (0..255 being the normal
+limits for a character), so a new userdata object was created
+(for convenience) to make things easier when drawing to curses
+windows.
+
+See also: window_
+
+.. contents::
+    :backlinks: entry
+    :local:
+
+
+
+chstr:len
+---------
+::
+
+    len = chstr:len()
+
+Returns the length of the ``chstr`` object.
+
+chstr:set_ch
+------------
+::
+
+    chstr:set_ch(index, ch, [attr, [rep]])
+
+Assign a character to the position **index** of the ``chstr`` object.
+**attr** is the attribute of the assigned character, if ``nil``
+it will have the value ``curses.A_NORMAL``.
+**rep** indicates the number of times the character is to be repeated,
+if it is ``nil`` it will be **1**.
+
+Use this if you want to use the alternate character set for drawing.
+
+If the assigned positions are out of bounds, they are ignored.
+
+Example::
+
+    -- create a chstr object and fill it will ACS_VLINE characters
+    str = curses.new_chstr(10)
+    str:set_ch(0, curses.ACS_VLINE, curses.A_NORMAL, 10)
+
+chstr:set_str
+-------------
+::
+
+    chstr:set_str(index, str, [attr, [rep]])
+
+Assign a string to the position **index** of the ``chstr`` object.
+**attr** is the attribute of the assigned string, if ``nil``
+it will have the value ``curses.A_NORMAL``.
+**rep** indicates the number of times the string is to be repeated,
+if it is ``nil`` it will be **1**.
+
+If the assigned positions are out of bounds, they are truncated/ignored.
+
+Example::
+
+    -- create a chstr object and fill it with text
+    str = curses.new_chstr(10)
+    str:set_string(0, 'hello', curses.A_NORMAL, 3)
+
+    -- str = 'hellohellohe'
+
+chstr:get
+---------
+::
+
+    ch, attr, color = chstr:get(index)
+
+Return the contents of the ``chstr`` object at the position **index**.
+
+chstr:dup
+---------
+::
+
+    str2 = str:dup()
+
+Create a duplicate (independent) of the ``chstr`` object for manipulation.
+
+
+Text functions
+==============
+
+Convenience functions, exported from the C standard library.
+
+.. contents::
+    :backlinks: entry
+    :local:
+
+curses.isalnum
+--------------
+(TODO)
+
+curses.isalpha
+--------------
+(TODO)
+
+curses.iscntrl
+--------------
+(TODO)
+
+curses.isdigit
+--------------
+(TODO)
+
+curses.isgraph
+--------------
+(TODO)
+
+curses.islower
+--------------
+(TODO)
+
+curses.isprint
+--------------
+(TODO)
+
+curses.ispunct
+--------------
+(TODO)
+
+curses.isspace
+--------------
+(TODO)
+
+curses.isupper
+--------------
+(TODO)
+
+curses.isxdigit
+---------------
+(TODO)
+
+Links
+=====
+
+- `X/Open Curses, Issue 4 Version 2 <http://www.opengroup.org/onlinepubs/007908799/cursesix.html>`__
+- `PDCurses <http://pdcurses.sourceforge.net/>`__
+- `NCURSES - New Curses <http://dickey.his.com/ncurses/ncurses.html>`__
+
+
+Extended table of contents
+==========================
+
+.. contents:: Extended table of contents
+   :backlinks: none
